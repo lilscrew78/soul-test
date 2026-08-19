@@ -79,6 +79,25 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 .loading-dots span:nth-child(3){animation-delay:.4s}
 @keyframes ldBounce{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.2)}}
 
+.r-portrait{width:130px;height:130px;border-radius:50%;object-fit:cover;
+  border:3px solid var(--accent);margin:0 auto 1rem;display:block;
+  box-shadow:0 2px 16px rgba(155,46,27,.15);background:var(--bg2)}
+.r-portrait-wrap{position:relative;width:130px;margin:0 auto 1rem}
+.r-portrait-wrap .sym-badge{position:absolute;bottom:-8px;right:-8px;
+  width:38px;height:38px;border:2px solid var(--accent);border-radius:50%;
+  background:#FFFCF6;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:1.1rem;color:var(--accent);font-weight:700}
+.gate{text-align:center;padding:2rem 1.5rem}
+.gate .seal{display:inline-flex;width:56px;height:56px;border:2px solid var(--accent);
+  border-radius:50%;align-items:center;justify-content:center;margin:0 auto 1.2rem;
+  font-family:var(--serif);font-size:1.6rem;color:var(--accent);background:rgba(155,46,27,.04)}
+.gate h2{font-family:var(--serif);font-size:1.4rem;margin-bottom:.5rem;color:var(--ink)}
+.gate .gate-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.7}
+.gate-input{width:100%;padding:.85rem 1rem;border:1.5px solid var(--rule);border-radius:10px;
+  font-size:1rem;text-align:center;font-family:var(--mono);letter-spacing:.1em;
+  background:#FFFCF6;color:var(--ink);margin-bottom:.8rem;outline:none;transition:border-color .2s}
+.gate-input:focus{border-color:var(--accent)}
+.gate-err{color:var(--accent);font-size:.78rem;margin-bottom:.8rem;min-height:1rem}
 .result{text-align:center}
 .result .r-label{font-size:.7rem;color:var(--accent);letter-spacing:.18em;
   text-transform:uppercase;font-family:var(--mono);margin-bottom:.4rem}
@@ -176,7 +195,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 <body>
 <div class="app"><div class="card"><div class="inner" id="app">
 
-<div id="s-welcome" class="welcome fade-in">
+<div id="s-gate" class="gate fade-in">
+<div class="seal">锁</div>
+<h2>灵魂测试 · 专属通道</h2>
+<div class="gate-sub">本测试为付费专属内容，请输入密钥解锁<br>密钥获取方式详见购买页说明</div>
+<input class="gate-input" id="gateInput" type="text" placeholder="请输入密钥" maxlength="20" onkeydown="if(event.key==='Enter')checkGate()">
+<div class="gate-err" id="gateErr"></div>
+<button class="btn" onclick="checkGate()">解锁测试</button>
+</div>
+
+<div id="s-welcome" class="welcome fade-in hidden">
 <div class="welcome-deco">
 <span class="deco-line"></span>
 <div class="seal">灵</div>
@@ -227,6 +255,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 
 <div id="s-result" class="result hidden">
 <div class="r-label">你的历史人格</div>
+<div class="r-portrait-wrap">
+<img class="r-portrait" id="rPortrait" crossorigin="anonymous" src="" alt="历史人物画像">
+<div class="sym-badge" id="rSymBadge"></div>
+</div>
 <div class="r-figure" id="rFigure"></div>
 <div class="r-tag" id="rTag"></div>
 <div class="r-keywords" id="rKeywords"></div>
@@ -272,6 +304,23 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 </div>
 
 <script>
+var _GATE_KEY="soul2026";
+function checkGate(){
+var v=document.getElementById("gateInput").value.trim();
+if(v===_GATE_KEY){
+document.getElementById("s-gate").classList.add("hidden");
+document.getElementById("s-welcome").classList.remove("hidden");
+document.getElementById("gateErr").textContent="";
+}else{
+document.getElementById("gateErr").textContent="密钥不正确，请检查后重试";
+document.getElementById("gateInput").value="";
+document.getElementById("gateInput").focus();
+}
+}
+function figImg(desc){
+var p="Traditional Chinese ink wash painting portrait, "+desc+", warm sepia gold tones, vintage parchment background, minimalist elegant brushwork, muted dark red accents, artistic illustration, single figure centered";
+return "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt="+encodeURIComponent(p)+"&image_size=square";
+}
 var Q=[
 {text:"到了一个新环境（新公司/新学校），你的状态是？",c:[
 {t:"很快就能和大家打成一片，主动找话题",d:"E"},
@@ -420,7 +469,7 @@ var Q=[
 ];
 
 var R={
-"ETPW":{f:"武则天",t:"野心型破局者",k:"野心 · 决断 · 不认命 · 掌控感",sym:"凤",
+"ETPW":{f:"武则天",img:figImg("a powerful Chinese empress wearing phoenix crown, authoritative majestic gaze, Tang dynasty imperial robes"),t:"野心型破局者",k:"野心 · 决断 · 不认命 · 掌控感",sym:"凤",
 q:"日月凌空，万物生长。我命由我，不由天。",
 radar:[85,60,95,90,75,50],
 a:"<p>你是天生的破局者。别人看到规则，你看到的是规则背后可以被改写的逻辑。你不害怕'野心'这个词——你觉得承认自己想赢，比假装不在乎酷多了。</p><p>武则天从才人到女皇，走的不是运气，是'我不认命'四个字。你也是一样：人生给你设限，你就掀桌子重来。你不是没有犹豫过，但你发现犹豫的成本比行动更高，于是你选择先干了再说。</p><p>你的破局在于：<strong>公</strong>，是用实力和手腕重新定义游戏规则；<strong>私</strong>，是在孤独的顶峰上学会和自己相处。高处不胜寒，但你的灵魂本就不适合待在谷底。</p>",
@@ -435,7 +484,7 @@ rec2:"书：《原则》 · 书：《从0到1》 | 电影：《社交网络》 �
 sm:{f:"陶渊明",t:"躺平式哲学家"},nm:{f:"诸葛亮",t:"焦虑型操盘手"},
 des:"你的人生宿命：在某个时刻，你会面临一个'是服从规则还是改写规则'的选择。选后者，你会打开一个新世界。"},
 
-"ETPS":{f:"嬴政",t:"铁血一统者",k:"果断 · 控制 · 格局 · 孤独",sym:"龙",
+"ETPS":{f:"嬴政",img:figImg("a commanding Chinese emperor Qin Shi Huang with dragon robe, fierce determined eyes, black imperial attire"),t:"铁血一统者",k:"果断 · 控制 · 格局 · 孤独",sym:"龙",
 q:"六合之内，皇帝之土。但孤，始终是孤。",
 radar:[70,55,95,70,70,45],
 a:"<p>你是那种'既然要做，就做到极致'的人。不鸣则已，一鸣惊人。嬴政横扫六国，书同文车同轨，不是因为他运气好，是他把所有精力集中在了一个目标上——并且不接受任何'差不多就行'。</p><p>你可能也一样：一旦决定了方向，你的执行力惊人。你不在乎别人怎么看你，你在乎事情做没做成。这种'不成功便成仁'的劲头让你很强大，但也让你很累。</p><p>你的孤独在于：站在高处的人，往往没人能说真心话。嬴政晚年追求长生不老，何尝不是一种孤独的极致表现——他觉得这个世界上没有人配和他对话了。</p>",
@@ -450,7 +499,7 @@ rec2:"书：《孙子兵法》 · 书：《深度工作》 | 电影：《教父�
 sm:{f:"苏轼",t:"松弛感天花板"},nm:{f:"屈原",t:"殉道型理想者"},
 des:"你的人生宿命：你会做成一件很多人觉得不可能的事，代价是过程中你需要独自承受无人理解的孤独。"},
 
-"ETLW":{f:"管仲",t:"务实型操盘手",k:"务实 · 策略 · 享受 · 知人",sym:"棋",
+"ETLW":{f:"管仲",img:figImg("a strategic Chinese statesman holding bamboo scroll, calculating intelligent gaze, Spring and Autumn period robes"),t:"务实型操盘手",k:"务实 · 策略 · 享受 · 知人",sym:"棋",
 q:"仓廪实而知礼节，衣食足而知荣辱。",
 radar:[80,65,70,80,65,70],
 a:"<p>你是那种'既要又要'的人——既要做成事，又要享受生活。管仲辅佐齐桓公称霸，自己也'富拟于公室'，活得滋润。他不觉得享受和成就是矛盾的，他要在成事的同时活得好。</p><p>你可能也一样：你很会权衡利弊，知道在什么时候该拼、什么时候该歇。你不是拼命三郎型，你是精算师型——每一步都算好了投入产出比。你的社交能力很强，能把不同的人拧成一股绳。</p><p>管仲最厉害的不是会算账，而是有'尊王攘夷'的大格局——务实之上，还有理想。否则他只是一个精明的商人，不会成为千古第一名相。</p>",
@@ -465,7 +514,7 @@ rec2:"书：《穷查理宝典》 · 书：《思考，快与慢》 | 电影：�
 sm:{f:"李清照",t:"清醒浪漫主义者"},nm:{f:"辛弃疾",t:"热血理想主义者"},
 des:"你的人生宿命：你会在'享受当下'和'做大事业'之间找到一个平衡点，那个点就是你的主场。"},
 
-"ETLS":{f:"刘邦",t:"市井型赢家",k:"务实 · 知人 · 变通 · 大心脏",sym:"犬",
+"ETLS":{f:"刘邦",img:figImg("a charismatic Chinese peasant emperor, cunning confident smile, simple Han dynasty commoner robes with crown"),t:"市井型赢家",k:"务实 · 知人 · 变通 · 大心脏",sym:"犬",
 q:"吾不如也。然吾能用之，此所以取天下也。",
 radar:[80,60,75,55,60,80],
 a:"<p>你是那种'看起来不怎么样，但最后赢了'的人。刘邦论武力不如项羽，论谋略不如张良，但他会用人，能屈能伸，该认怂就认怂，该翻脸就翻脸。市井出身，最终得了天下。</p><p>你可能也一样：不是最聪明的，不是最能干的，但你有一种'大心脏'——输得起，弯得下腰，拿得起放得下。别人在纠结面子，你在算里子。</p><p>你的破局在于：别被'运气好'的自我设限困住。刘邦从来不觉得自己了不起，但他的'不起眼'恰恰是最大的武器。你的务实和变通是你的天赋，但偶尔也要有点'我想做大事'的野心。</p>",
@@ -480,7 +529,7 @@ rec2:"书：《影响力》 · 书：《人性的弱点》 | 电影：《阿甘�
 sm:{f:"杜甫",t:"忧世型诗人"},nm:{f:"武则天",t:"野心型破局者"},
 des:"你的人生宿命：你会在一个不起眼的地方起步，靠的不是才华而是格局，最终走到所有人意想不到的位置。"},
 
-"EFPW":{f:"辛弃疾",t:"热血理想主义者",k:"热血 · 豪迈 · 意难平 · 行动派",sym:"剑",
+"EFPW":{f:"辛弃疾",img:figImg("a heroic Chinese warrior poet holding sword, fierce patriotic eyes, Southern Song dynasty armor"),t:"热血理想主义者",k:"热血 · 豪迈 · 意难平 · 行动派",sym:"剑",
 q:"醉里挑灯看剑，梦回吹角连营。心里有火的人，不该假装不冷。",
 radar:[80,85,85,85,80,50],
 a:"<p>你心里有一团火，从小烧到大。你见不得不公平，忍不了平庸，总觉得自己应该做点什么、改变点什么。辛弃疾22岁带五十骑闯五万人大营，活捉叛将——这种疯狂的事你骨子里也想干一次。</p><p>但现实往往给你浇冷水。稼轩居士一生都在'醉里挑灯看剑'——他有最大的热血，却撞上了最冷的时代。你可能也一样：空有一腔抱负，找不到用武之地。</p><p>你的破局在于：不等世界给你舞台，自己搭一个。辛弃疾把满腔热血写成了词，你也要找到你的'词'。</p>",
@@ -495,7 +544,7 @@ rec2:"书：《活出生命的意义》 · 书：《平凡的世界》 | 电影�
 sm:{f:"司马迁",t:"沉默记录者"},nm:{f:"刘邦",t:"市井型赢家"},
 des:"你的人生宿命：你心里那团火永远不会灭。关键不是找到出口，而是找到一种让火焰照亮而非烧毁自己的方式。"},
 
-"EFPS":{f:"李白",t:"浪漫主义诗仙",k:"自由 · 才华 · 浪漫 · 不羁",sym:"月",
+"EFPS":{f:"李白",img:figImg("a free spirited Chinese poet holding wine gourd, romantic wild expression, flowing Tang dynasty robes"),t:"浪漫主义诗仙",k:"自由 · 才华 · 浪漫 · 不羁",sym:"月",
 q:"天生我材必有用，千金散尽还复来。",
 radar:[90,90,75,55,95,65],
 a:"<p>你是天生的浪漫主义者，活在这个世界但不属于这个世界。李白'天子呼来不上船，自称臣是酒中仙'，他的自由是骨子里的，不是装出来的。你也是一样：你心里有一种对自由的执念，比大多数人都要强烈。</p><p>你可能也一样：你很有才华，但你的才华往往没有'用对地方'。李白一辈子想做政治家，却成了诗人。你的痛苦可能也来自于此——你以为自己想走这条路，但你的灵魂其实适合另一条。</p><p>但正是这种'错位'，造就了你的独特。李白的诗之所以惊天地泣鬼神，恰恰因为他不是一个安分的人。</p>",
@@ -510,7 +559,7 @@ rec2:"书：《月亮与六便士》 · 书：《人间词话》 | 电影：《�
 sm:{f:"班昭",t:"温柔的理性"},nm:{f:"王阳明",t:"知行合一者"},
 des:"你的人生宿命：你会经历一次'自由还是安稳'的选择。选自由你会成为传奇，选安稳你会遗憾。"},
 
-"EFLW":{f:"苏轼",t:"松弛感天花板",k:"达观 · 有趣 · 创造力 · 随遇而安",sym:"竹",
+"EFLW":{f:"苏轼",img:figImg("a relaxed Chinese poet scholar with wine cup, carefree joyful smile, Song dynasty literati robes"),t:"松弛感天花板",k:"达观 · 有趣 · 创造力 · 随遇而安",sym:"竹",
 q:"竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。",
 radar:[90,85,50,75,90,85],
 a:"<p>恭喜你，你是这世界上最难被打败的那种人——因为你根本不在乎被打败。苏轼一生被贬了三次，越贬越远，他在黄州发明东坡肉，在惠州日啖荔枝三百颗，在海南顺手搞了个'东坡笠'。</p><p>你也是这样的人：人生给你柠檬，你做柠檬水；人生给你一巴掌，你说'这手法不错'。不是你没心没肺，而是你看透了——与其和命运较劲，不如先吃好这顿饭。</p><p>你的破局在于：把这份松弛变成创造力。苏东坡之所以是苏东坡，不只因为他想得开，更因为他在想开的同时写出了'大江东去'。松弛是你的底色，但别让它变成逃避的借口。</p>",
@@ -525,7 +574,7 @@ rec2:"书：《被讨厌的勇气》 · 书：《心流》 | 电影：《人生�
 sm:{f:"嬴政",t:"铁血一统者"},nm:{f:"诸葛亮",t:"焦虑型操盘手"},
 des:"你的人生宿命：你会被命运'贬'到意想不到的地方，但在那里你会找到连你自己都没想到的宝藏。"},
 
-"EFLS":{f:"唐伯虎",t:"风流型才子",k:"才情 · 洒脱 · 享乐 · 不羁",sym:"花",
+"EFLS":{f:"唐伯虎",img:figImg("a romantic Chinese painter scholar holding brush, playful elegant expression, Ming dynasty robes"),t:"风流型才子",k:"才情 · 洒脱 · 享乐 · 不羁",sym:"花",
 q:"别人笑我太疯癫，我笑他人看不穿。",
 radar:[85,85,45,50,85,80],
 a:"<p>你是那种'活着就是为了尽兴'的人。唐伯虎才华横溢却科举被冤，干脆不装了——'别人笑我太疯癫，我笑他人看不穿'。他画画、喝酒、追秋香，活得痛快淋漓。</p><p>你可能也一样：你骨子里有一种'不伺候'的气质。不是没能力正经，而是你觉得正经太无聊了。你有才华，但你更在乎活着的乐趣。你不想被任何标签框住——你是自由的。</p><p>但唐伯虎晚年在桃花坞种花写诗，表面潇洒，其实心里有未愈合的伤。自由的人，往往是因为被伤过才选择了自由。</p>",
@@ -540,7 +589,7 @@ rec2:"书：《人间草木》（汪曾祺） · 书：《浮生六记》 | 电�
 sm:{f:"屈原",t:"殉道型理想者"},nm:{f:"武则天",t:"野心型破局者"},
 des:"你的人生宿命：你会在别人觉得你'废了'的时候，活出一种让人嫉妒的自在。"},
 
-"ITPW":{f:"诸葛亮",t:"焦虑型操盘手",k:"谋略 · 完美主义 · 责任感 · 内耗",sym:"灯",
+"ITPW":{f:"诸葛亮",img:figImg("a wise Chinese strategist holding feather fan, calm contemplative gaze, Three Kingdoms period Taoist robes"),t:"焦虑型操盘手",k:"谋略 · 完美主义 · 责任感 · 内耗",sym:"灯",
 q:"非淡泊无以明志，非宁静无以致远。有些事你控制不了，放下不是认输。",
 radar:[40,60,85,90,80,40],
 a:"<p>你是天生的操盘手。凡事预则立，不预你心里就慌。你习惯把所有可能性都想一遍，你的人生信条是'谋事在人'——但问题是，你想的太多了。</p><p>诸葛亮六出祁山，每一次都计划得天衣无缝，但天意不在他。你的焦虑也来自于此：你太想把事情做对了，太想对所有人负责了，以至于你忘了——有些事，不是你能控制的。</p><p>你的破局在于：学会'鞠躬尽瘁'之后的'死而后已'——不是真的去死，而是接受'我已经尽力了'。完美主义是你的铠甲也是你的枷锁。</p>",
@@ -555,7 +604,7 @@ rec2:"书：《反脆弱》 · 书：《精要主义》 | 电影：《模仿游�
 sm:{f:"唐伯虎",t:"风流型才子"},nm:{f:"苏轼",t:"松弛感天花板"},
 des:"你的人生宿命：你需要学会一件事——有些仗打不赢不是你的错。放下执念的那一刻，你才真正自由。"},
 
-"ITPS":{f:"王阳明",t:"知行合一者",k:"自律 · 理想 · 感召力 · 内省",sym:"心",
+"ITPS":{f:"王阳明",img:figImg("a philosophical Chinese sage in meditation, serene wise expression, Ming dynasty scholar robes"),t:"知行合一者",k:"自律 · 理想 · 感召力 · 内省",sym:"心",
 q:"知而不行，只是未知。心外无物，心外无理。",
 radar:[55,65,80,65,75,70],
 a:"<p>你是那种'想清楚了就必须做'的人。很多人停在想的阶段，但你不一样——你信奉'知行合一'，知道了不做到，等于不知道。王阳明被贬到龙场，在生死边缘悟出'心即理'，不是靠空想，是在绝境中逼自己想通然后做通。</p><p>你可能也一样：经历过一些事，想明白了一些道理，然后你的人生就拐了个弯。你不是那种空谈理想的人，你是把理想拆成行动步骤的人。</p><p>你的破局在于：别让'知行合一'变成新的枷锁。你对自己要求太高了，总觉得'知道但没做到'就是失败。但王阳明也说'在事上磨'——成长是在具体的事里磨出来的。</p>",
@@ -570,7 +619,7 @@ rec2:"书：《活法》（稻盛和夫） · 书：《当下的力量》 | 电�
 sm:{f:"李白",t:"浪漫主义诗仙"},nm:{f:"陶渊明",t:"躺平式哲学家"},
 des:"你的人生宿命：你会经历一次'认知坍塌'，然后从废墟中重建一套属于你自己的信念体系。那之后，你不再容易被任何人动摇。"},
 
-"ITLW":{f:"司马迁",t:"沉默记录者",k:"隐忍 · 洞察 · 笔力 · 不朽",sym:"笔",
+"ITLW":{f:"司马迁",img:figImg("a resolute Chinese historian holding bamboo slips, determined unwavering gaze, Han dynasty scholar robes"),t:"沉默记录者",k:"隐忍 · 洞察 · 笔力 · 不朽",sym:"笔",
 q:"究天人之际，通古今之变，成一家之言。",
 radar:[35,65,55,80,85,60],
 a:"<p>你是那种在人群中不显山露水，但什么都看在眼里的人。司马迁遭受宫刑之辱，没有崩溃，而是用一支笔写出了《史记》——他选择用作品说话。</p><p>你可能也一样：不争口头上的输赢，但你会把所见所感记录下来、沉淀下来。你的力量不在嘴上，在笔上（或键盘上）。你觉得看清一个时代的本质，比参与其中更重要。</p><p>你的破局在于：从'记录者'走向'参与者'。司马迁写完《史记》也影响了后世两千年——记录本身就是参与。但如果你心里还有想做的事，别只记录，去做。</p>",
@@ -585,7 +634,7 @@ rec2:"书：《人类简史》 · 书：《枪炮、病菌与钢铁》 | 电影�
 sm:{f:"辛弃疾",t:"热血理想主义者"},nm:{f:"唐伯虎",t:"风流型才子"},
 des:"你的人生宿命：你经历过的不公和苦难，最终会变成你最重要的作品。你的笔，比你的拳头更有力。"},
 
-"ITLS":{f:"班昭",t:"温柔的理性",k:"沉静 · 博学 · 坚韧 · 幕后力量",sym:"兰",
+"ITLS":{f:"班昭",img:figImg("a dignified Chinese female scholar holding book, intellectual poised expression, Han dynasty robes"),t:"温柔的理性",k:"沉静 · 博学 · 坚韧 · 幕后力量",sym:"兰",
 q:"不鸣则已，一鸣惊人。你的温柔，是你最大的力量。",
 radar:[35,60,50,55,75,85],
 a:"<p>你是那种'不鸣则已一鸣惊人'的人。不争不抢不代表没实力，只是你觉得没必要。班昭是班固的妹妹，在哥哥死后接手完成《汉书》，是中国第一位女历史学家。她不张扬，但她的笔比千军万马更有力。</p><p>你可能也一样：在人群中不是最亮的那个，但做事最靠谱。你不需要被看见才肯发光——你觉得把自己的事做好，本身就是意义。</p><p>你的破局在于：不要永远待在幕后。班昭最终被皇帝请出山做皇后和嫔妃的老师，从幕后走到了台前。你的温柔和理性是最大的武器，但别让温柔变成隐忍。</p>",
@@ -600,7 +649,7 @@ rec2:"书：《安静》（苏珊·凯恩） · 书：《沉思录》 | 电影�
 sm:{f:"李白",t:"浪漫主义诗仙"},nm:{f:"嬴政",t:"铁血一统者"},
 des:"你的人生宿命：你会在某个时刻被推到台前。别躲——你的温柔和理性，恰恰是这个世界最需要的力量。"},
 
-"IFPW":{f:"屈原",t:"殉道型理想者",k:"理想 · 清高 · 孤勇 · 不妥协",sym:"莲",
+"IFPW":{f:"屈原",img:figImg("a passionate Chinese poet holding orchid flowers, sorrowful but dignified expression, Warring States robes"),t:"殉道型理想者",k:"理想 · 清高 · 孤勇 · 不妥协",sym:"莲",
 q:"举世皆浊我独清，众人皆醉我独醒。",
 radar:[45,90,80,85,85,35],
 a:"<p>你是那种'宁可玉碎，不为瓦全'的人。屈原宁死不愿与世俗同流合污，他的理想主义不是嘴上说说，是真的拿命在赌。举世皆浊他独清，众人皆醉他独醒。</p><p>你可能也一样：你心里有一条线，死都不过。你可以接受失败，但不能接受违背自己。这种不妥协让你在人群中显得格格不入，但也让你拥有一种别人偷不走的干净。</p><p>但理想主义如果只走向自我毁灭，那就太可惜了。屈原投身汨罗江，他的理想成了绝唱——但如果他活着呢？</p>",
@@ -615,7 +664,7 @@ rec2:"书：《理想国》 · 书：《苏菲的世界》 | 电影：《荒野�
 sm:{f:"管仲",t:"务实型操盘手"},nm:{f:"嬴政",t:"铁血一统者"},
 des:"你的人生宿命：你会面临'同流合污'还是'独善其身'的选择。但第三条路存在——在泥里走，但不被泥染。"},
 
-"IFPS":{f:"李清照",t:"清醒浪漫主义者",k:"敏感 · 才华 · 独立 · 深情",sym:"梅",
+"IFPS":{f:"李清照",img:figImg("an elegant Chinese female poet with plum blossoms, melancholic refined beauty, Song dynasty robes"),t:"清醒浪漫主义者",k:"敏感 · 才华 · 独立 · 深情",sym:"梅",
 q:"生当作人杰，死亦为鬼雄。看清楚了依然选择深情，才是真正的勇敢。",
 radar:[45,90,70,55,90,65],
 a:"<p>你有一颗既柔软又锋利的心。你能为落花流泪，也能在国破家亡时写下'生当作人杰，死亦为鬼雄'。你是浪漫的，但不是盲目的——你看得很清楚，只是看清楚了依然选择深情。</p><p>李清照是宋词里最亮的一颗星。前半生'赌书消得泼茶香'的甜蜜，后半生'寻寻觅觅冷冷清清'的凄凉。她什么都经历过了，但诗词里始终有一种不肯屈服的骨气。</p><p>你的破局在于：接受深情但不被深情吞噬。你的敏感是天赋，让你比别人更懂得美；但敏感也是双刃剑，让你比别人更容易受伤。</p>",
@@ -630,7 +679,7 @@ rec2:"书：《一间自己的房间》 · 书：《第二性》 | 电影：《�
 sm:{f:"管仲",t:"务实型操盘手"},nm:{f:"刘邦",t:"市井型赢家"},
 des:"你的人生宿命：你会经历一段极致的甜蜜和一段极致的苦。你的力量在于：哭完了，擦干眼泪，写一首更好的词。"},
 
-"IFLW":{f:"杜甫",t:"忧世型诗人",k:"共情 · 忧患 · 记录 · 悲悯",sym:"舟",
+"IFLW":{f:"杜甫",img:figImg("a compassionate Chinese poet with worried caring expression, thoughtful gentle gaze, Tang dynasty robes"),t:"忧世型诗人",k:"共情 · 忧患 · 记录 · 悲悯",sym:"舟",
 q:"安得广厦千万间，大庇天下寒士俱欢颜。",
 radar:[35,90,50,85,85,50],
 a:"<p>你是那种'自己淋过雨，所以总想给别人撑伞'的人。杜甫自己穷困潦倒、茅屋被秋风所破，却写下'安得广厦千万间，大庇天下寒士俱欢颜'。他的苦难没有让他变得冷漠，反而让他更懂得别人的苦。</p><p>你可能也一样：你有一种近乎本能的共情能力——看到别人的苦难，你会心疼；看到不公，你会愤怒。你的感受力比常人深好几层，这让你既能写出好东西，也容易背负太多情绪。</p><p>你的破局在于：允许自己'不被所有人的苦难压垮'。你的悲悯是天赋，但你也配得上自己的广厦。</p>",
@@ -645,7 +694,7 @@ rec2:"书：《追风筝的人》 · 书：《活着》 | 电影：《何以为�
 sm:{f:"刘邦",t:"市井型赢家"},nm:{f:"辛弃疾",t:"热血理想主义者"},
 des:"你的人生宿命：你的共情能力会让你背负很多不属于你的痛苦。学会在为别人撑伞之前，先给自己搭好屋子。"},
 
-"IFLS":{f:"陶渊明",t:"躺平式哲学家",k:"恬淡 · 自然 · 不争 · 自洽",sym:"菊",
+"IFLS":{f:"陶渊明",img:figImg("a serene Chinese scholar poet holding chrysanthemum flowers, peaceful contented expression, Eastern Jin robes"),t:"躺平式哲学家",k:"恬淡 · 自然 · 不争 · 自洽",sym:"菊",
 q:"采菊东篱下，悠然见南山。选了之后不回头，才是真正的自洽。",
 radar:[30,80,35,40,70,95],
 a:"<p>你是这届年轻人最想成为的人。不为五斗米折腰，说辞职就辞职，回老家种菊花去了。你的人生哲学很简单：开心就好，不争了。</p><p>陶渊明活成了'松弛'的鼻祖。别人卷官场，他卷'采菊东篱下，悠然见南山'。不是他没本事当官——他当过，只是觉得不值得。你也是一样：看透了那些社会评价体系，选择按自己的标准活。</p><p>你的破局在于：确认'躺平'是主动选择还是被动逃避。陶渊明是真躺——他躺得有底气，有菊花，有诗，有酒，有'不为五斗米'的傲骨。</p>",
@@ -734,6 +783,10 @@ _ctp=tp;
 var r=R[tp];
 document.getElementById("s-result").classList.remove("hidden");
 var rs=document.getElementById("s-result");rs.classList.add("fade-in");
+var rp=document.getElementById("rPortrait");
+rp.onerror=function(){rp.style.display="none"};
+rp.src=r.img||"";
+document.getElementById("rSymBadge").textContent=r.sym;
 document.getElementById("rFigure").textContent=r.f;
 document.getElementById("rTag").textContent=r.t;
 document.getElementById("rKeywords").textContent=r.k;
@@ -841,13 +894,18 @@ x.fillStyle="#A8843A";x.font="600 20px sans-serif";
 x.fillText(r.t,375,193);
 x.fillStyle="#8C8478";x.font="14px sans-serif";
 x.fillText(r.k,375,223);
-x.strokeStyle="#9C2E1B";x.lineWidth=3;
-x.beginPath();x.arc(375,285,38,0,2*Math.PI);x.stroke();
+var _pi=document.getElementById("rPortrait"),_ok=_pi&&_pi.complete&&_pi.naturalWidth>0;
+if(_ok){try{x.save();x.beginPath();x.arc(375,285,42,0,2*Math.PI);x.clip();x.drawImage(_pi,333,243,84,84);x.restore();}catch(e){_ok=false}}
+if(_ok){
+x.strokeStyle="#9C2E1B";x.lineWidth=3;x.beginPath();x.arc(375,285,42,0,2*Math.PI);x.stroke();
+x.fillStyle="#9C2E1B";x.font="bold 14px Georgia,serif";x.fillText(r.sym,375,345);
+x.fillStyle="#8C8478";x.font="11px sans-serif";x.fillText("你的灵魂符号",375,358);
+}else{
+x.strokeStyle="#9C2E1B";x.lineWidth=3;x.beginPath();x.arc(375,285,38,0,2*Math.PI);x.stroke();
 x.fillStyle="rgba(155,46,27,0.04)";x.fill();
-x.fillStyle="#9C2E1B";x.font="bold 36px Georgia,serif";
-x.fillText(r.sym,375,300);
-x.fillStyle="#8C8478";x.font="12px sans-serif";
-x.fillText("你的灵魂符号",375,340);
+x.fillStyle="#9C2E1B";x.font="bold 36px Georgia,serif";x.fillText(r.sym,375,300);
+x.fillStyle="#8C8478";x.font="12px sans-serif";x.fillText("你的灵魂符号",375,340);
+}
 x.strokeStyle="#D2C7B0";x.lineWidth=1;
 x.beginPath();x.moveTo(120,368);x.lineTo(630,368);x.stroke();
 x.fillStyle="#9C2E1B";x.font="italic 18px Georgia,serif";
@@ -922,8 +980,8 @@ x.fillStyle="#8C8478";x.font="12px sans-serif";
 x.fillText("灵魂人格研究所 · 24题深度性格测试",375,y4+128);
 var link=document.createElement("a");
 link.download="灵魂人物_"+r.f+".png";
-link.href=c.toDataURL("image/png");
-link.click();
+try{link.href=c.toDataURL("image/png");link.click();}
+catch(e){alert("图片含跨域资源无法导出，请长按页面截图保存");}
 }
 </script>
 </body>
