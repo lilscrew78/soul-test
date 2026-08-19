@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你的灵魂住着哪位中国历史人物 · 24题深度性格测试</title>
+<style>
+:root{
+  --bg:#F2EBDE; --bg2:#E8DFCC; --ink:#2B2620; --muted:#8C8478;
+  --rule:#D2C7B0; --accent:#9C2E1B; --accent2:#A8843A; --accent3:#5B6D4A;
+  --serif:Georgia,'Noto Serif SC','Source Han Serif SC','Songti SC',serif;
+  --sans:'Helvetica Neue','PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;
+  --mono:'Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;min-height:100vh;
+  background-image:radial-gradient(circle at 20% 10%,rgba(168,132,58,.05) 0,transparent 50%),
+                   radial-gradient(circle at 80% 80%,rgba(155,46,27,.04) 0,transparent 50%);
+}
+.app{max-width:560px;margin:0 auto;padding:1rem;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.card{background:#FFFCF6;border:1px solid var(--rule);border-radius:16px;
+  box-shadow:0 4px 30px rgba(43,38,32,.08);overflow:hidden;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3))}
+.inner{padding:2.2rem 1.8rem 2rem}
+.hidden{display:none!important}
+
+.welcome{text-align:center}
+.welcome .seal{display:inline-flex;width:48px;height:48px;border:2px solid var(--accent);
+  border-radius:50%;align-items:center;justify-content:center;margin:0 auto 1rem;
+  font-family:var(--serif);font-size:1.4rem;color:var(--accent);background:rgba(155,46,27,.04)}
+.welcome h1{font-family:var(--serif);font-size:1.65rem;line-height:1.4;margin-bottom:.5rem}
+.welcome .sub{color:var(--muted);font-size:.88rem;margin-bottom:1.5rem;line-height:1.7}
+.welcome .sub strong{color:var(--ink);font-weight:600}
+.welcome .intro{font-size:.82rem;color:var(--muted);line-height:1.8;margin-bottom:1.8rem;
+  padding:1rem;background:var(--bg2);border-radius:8px;text-align:left}
+.welcome .intro strong{color:var(--accent);font-weight:600}
+.welcome .stats{display:flex;gap:.5rem;margin-bottom:1.8rem}
+.welcome .stat{flex:1;text-align:center;padding:.6rem .3rem;background:var(--bg2);border-radius:6px}
+.welcome .stat .n{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--accent);display:block}
+.welcome .stat .l{font-size:.68rem;color:var(--muted);font-weight:500}
+.welcome .feats{text-align:left;font-size:.78rem;color:var(--muted);line-height:2;margin-bottom:1.8rem;padding:0 .5rem}
+.welcome .feats span{color:var(--accent2);font-weight:600;margin-right:.3rem}
+.btn{display:block;width:100%;padding:.85rem;border:none;border-radius:10px;
+  background:var(--accent);color:#fff;font-size:1rem;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:var(--sans)}
+.btn:hover{background:#82261A;transform:translateY(-1px);box-shadow:0 4px 12px rgba(155,46,27,.3)}
+.btn.outline{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn.outline:hover{background:rgba(155,46,27,.05);transform:none}
+
+.q-top{display:flex;align-items:center;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--rule)}
+.q-dot.on{background:var(--accent)}
+.q-info{margin-left:auto;font-size:.72rem;color:var(--muted);font-family:var(--mono)}
+.progress{height:5px;background:var(--bg2);border-radius:3px;margin-bottom:1.5rem;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:3px;transition:width .4s ease}
+.q-text{font-size:1.05rem;font-weight:600;line-height:1.6;margin-bottom:1.3rem}
+.choices{display:flex;flex-direction:column;gap:.6rem}
+.choice{display:block;width:100%;text-align:left;padding:.85rem 1rem;
+  border:1.5px solid var(--rule);border-radius:10px;background:#FFFCF6;
+  font-size:.9rem;cursor:pointer;transition:all .15s;font-family:var(--sans);
+  color:var(--ink);line-height:1.5}
+.choice:hover{border-color:var(--accent);background:rgba(155,46,27,.03);transform:translateX(2px)}
+.choice .letter{display:inline-block;width:22px;height:22px;border-radius:50%;
+  background:var(--bg2);color:var(--muted);text-align:center;line-height:22px;
+  font-size:.72rem;font-weight:700;margin-right:.6rem;vertical-align:middle}
+.choice.mid .letter{background:rgba(168,132,58,.15);color:var(--accent2)}
+.q-back{text-align:center;font-size:.78rem;color:var(--muted);margin-top:1rem;cursor:pointer;padding:.4rem;transition:color .2s}
+.q-back:hover{color:var(--accent)}
+
+.s-loading{text-align:center;padding:3rem 1rem}
+.s-loading .ld-title{font-family:var(--serif);font-size:1.15rem;color:var(--accent);margin-bottom:.5rem}
+.s-loading .ld-sub{font-size:.8rem;color:var(--muted);margin-bottom:1.5rem}
+.loading-dots{display:flex;gap:.5rem;justify-content:center}
+.loading-dots span{width:10px;height:10px;border-radius:50%;background:var(--accent);animation:ldBounce 1.2s infinite ease-in-out}
+.loading-dots span:nth-child(2){animation-delay:.2s}
+.loading-dots span:nth-child(3){animation-delay:.4s}
+@keyframes ldBounce{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.2)}}
+
+.result{text-align:center}
+.result .r-label{font-size:.7rem;color:var(--accent);letter-spacing:.18em;
+  text-transform:uppercase;font-family:var(--mono);margin-bottom:.4rem}
+.result .r-figure{font-family:var(--serif);font-size:2.2rem;font-weight:700;
+  margin-bottom:.3rem;color:var(--ink)}
+.result .r-tag{display:inline-block;font-size:.82rem;color:var(--accent2);font-weight:600;
+  padding:3px 12px;background:rgba(168,132,58,.1);border-radius:4px;margin-bottom:.8rem}
+.result .r-keywords{font-size:.82rem;color:var(--muted);margin-bottom:.3rem}
+.r-sym-row{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1rem}
+.r-sym{font-family:var(--serif);font-size:2rem;color:var(--accent);font-weight:700;
+  width:54px;height:54px;border:2px solid var(--accent);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;background:rgba(155,46,27,.04)}
+.r-sym-label{font-size:.72rem;color:var(--muted)}
+.radar-box{margin:0 auto 1.2rem;width:220px;height:220px}
+.r-quote{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--accent);
+  margin-bottom:1.5rem;padding:.8rem 1.2rem;line-height:1.7;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.section-title{font-size:.75rem;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;font-family:var(--mono);margin:1.4rem 0 .5rem;text-align:left}
+.r-analysis{text-align:left;font-size:.9rem;line-height:1.85;margin-bottom:1rem}
+.r-analysis p{margin-bottom:.7rem}
+.r-advice{text-align:left;background:var(--bg2);border-radius:8px;padding:1rem 1.2rem;
+  margin-bottom:1rem;font-size:.88rem;line-height:1.7}
+.r-advice .at{font-weight:700;color:var(--accent);font-size:.78rem;margin-bottom:.3rem;
+  text-transform:uppercase;letter-spacing:.05em}
+.r-grow{text-align:left;background:rgba(91,109,74,.06);border:1px solid rgba(91,109,74,.2);
+  border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;font-size:.88rem;line-height:1.7}
+.r-grow .gt{font-weight:700;color:var(--accent3);font-size:.78rem;margin-bottom:.3rem;
+  text-transform:uppercase;letter-spacing:.05em}
+.r-dual{text-align:left;background:linear-gradient(135deg,rgba(91,109,74,.05),rgba(168,132,58,.05));
+  border:1px dashed var(--accent3);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;font-size:.88rem;line-height:1.7}
+.r-dual .dt{font-weight:700;color:var(--accent3);font-size:.78rem;margin-bottom:.3rem;
+  text-transform:uppercase;letter-spacing:.05em}
+.r-dual .dn{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--ink)}
+.r-talent{text-align:left;background:linear-gradient(135deg,rgba(155,46,27,.04),rgba(168,132,58,.06));
+  border:1px dashed var(--accent);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;font-size:.88rem;line-height:1.7}
+.r-talent .tt{font-weight:700;color:var(--accent);font-size:.78rem;margin-bottom:.3rem;
+  text-transform:uppercase;letter-spacing:.05em}
+.r-blind{text-align:left;background:linear-gradient(135deg,rgba(155,46,27,.06),rgba(43,38,32,.04));
+  border-left:4px solid var(--ink);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:1rem;font-size:.88rem;line-height:1.7}
+.r-blind .bt{font-weight:700;color:var(--ink);font-size:.78rem;margin-bottom:.3rem;
+  text-transform:uppercase;letter-spacing:.05em}
+.r-extras{text-align:left;display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem}
+.r-extra{background:#FFFCF6;border:1px solid var(--rule);border-radius:8px;padding:.8rem 1rem}
+.r-extra .el{font-weight:700;color:var(--accent2);font-size:.72rem;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.05em}
+.r-extra .eb{font-size:.83rem;line-height:1.6;color:var(--ink)}
+.r-rec{display:grid;grid-template-columns:1fr;gap:.5rem;margin-bottom:1rem}
+.r-rec-item{background:#FFFCF6;border:1px solid var(--rule);border-radius:8px;padding:.7rem 1rem;
+  display:flex;align-items:center;gap:.7rem;text-align:left}
+.r-rec-item .rl{font-family:var(--serif);font-size:1.2rem;color:var(--accent2);font-weight:700;flex-shrink:0}
+.r-rec-item .rb{font-size:.83rem;line-height:1.5;color:var(--ink)}
+.compat{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem}
+.compat-item{background:#FFFCF6;border:1px solid var(--rule);border-radius:8px;
+  padding:.8rem;text-align:center}
+.compat-item .cl{font-size:.68rem;color:var(--muted);margin-bottom:.3rem}
+.compat-item .cn{font-family:var(--serif);font-size:1rem;font-weight:700}
+.compat-item .ct{font-size:.72rem;color:var(--accent2)}
+.compat-item.nemesis .cn{color:var(--accent3)}
+.r-destiny{text-align:left;background:linear-gradient(135deg,rgba(155,46,27,.04),rgba(168,132,58,.04));
+  border:1px dashed var(--accent2);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1.5rem;
+  font-size:.88rem;line-height:1.7}
+.r-destiny .dt{font-weight:700;color:var(--accent2);font-size:.78rem;margin-bottom:.3rem;
+  text-transform:uppercase;letter-spacing:.05em}
+.r-actions{display:flex;gap:.6rem}
+.r-actions .btn{flex:1}
+.foot{text-align:center;font-size:.68rem;color:var(--muted);margin-top:1.2rem;padding-bottom:.5rem}
+.fade-in{animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.welcome-deco{display:flex;align-items:center;justify-content:center;gap:.8rem;margin-bottom:1.2rem}
+.welcome-deco .deco-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--rule),transparent)}
+.welcome-deco .seal{margin-bottom:0}
+.welcome-tagline{font-family:var(--mono);font-size:.68rem;color:var(--accent2);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.7rem;font-weight:600}
+.welcome h1{font-size:1.9rem;font-weight:300}
+.welcome h1 .title-em{color:var(--accent);font-style:italic;font-weight:700;display:inline-block;position:relative}
+.welcome h1 .title-em::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;opacity:.3}
+.welcome .social-proof{margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:.8rem;padding:.7rem 1rem;background:var(--bg2);border-radius:8px}
+.welcome .social-proof .stars{color:var(--accent2);font-size:.9rem;letter-spacing:.15em}
+.welcome .social-proof .proof-text{font-size:.76rem;color:var(--muted)}
+.welcome .social-proof .proof-text strong{color:var(--accent);font-weight:600}
+.welcome .preview-box{margin-bottom:1.5rem;padding:1rem 1.1rem;background:linear-gradient(135deg,rgba(155,46,27,.03),rgba(168,132,58,.04));border:1px solid var(--rule);border-radius:10px;text-align:left}
+.welcome .preview-box .pv-label{font-family:var(--mono);font-size:.66rem;color:var(--accent2);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem}
+.welcome .preview-box .pv-content{display:flex;gap:.8rem;align-items:center}
+.welcome .preview-box .pv-symbol{width:44px;height:44px;border:2px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.3rem;color:var(--accent);background:rgba(155,46,27,.04);flex-shrink:0}
+.welcome .preview-box .pv-text{font-size:.74rem;color:var(--muted);line-height:1.7}
+.welcome .preview-box .pv-text strong{color:var(--ink);font-weight:600}
+.q-dim-watermark{position:absolute;top:-.5rem;right:.5rem;font-family:var(--serif);font-size:5rem;color:var(--accent);opacity:.05;pointer-events:none;line-height:1;z-index:0}
+.q-hint{font-size:.72rem;color:var(--muted);font-style:italic;margin-top:1rem;text-align:center;line-height:1.6;opacity:.6}
+.r-rec-group{margin-bottom:.8rem}
+.r-rec-group:last-child{margin-bottom:0}
+.r-rec-cat{font-size:.7rem;color:var(--accent2);font-weight:600;margin-bottom:.4rem;padding-left:.2rem;letter-spacing:.05em}
+@media(max-width:400px){.inner{padding:1.5rem 1.2rem 1.5rem}.welcome h1{font-size:1.4rem}.result .r-figure{font-size:1.8rem}.r-extras,.compat{grid-template-columns:1fr}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+</head>
+<body>
+<div class="app"><div class="card"><div class="inner" id="app">
+
+<div id="s-welcome" class="welcome fade-in">
+<div class="welcome-deco">
+<span class="deco-line"></span>
+<div class="seal">灵</div>
+<span class="deco-line"></span>
+</div>
+<div class="welcome-tagline">灵魂测试 · 历史人物匹配</div>
+<h1>你的灵魂住着<br><span class="title-em">哪位中国历史人物</span></h1>
+<div class="sub"><strong>24</strong>题深度测试 · <strong>4</strong>维度交叉分析 · <strong>16</strong>种历史人格</div>
+<div class="social-proof">
+<span class="stars">★★★★★</span>
+<span class="proof-text">已有 <strong>10,000+</strong> 人找到自己的<strong>历史灵魂</strong></span>
+</div>
+<div class="intro">
+<strong>从苏轼的松弛到武则天的野心，从陶渊明的自洽到辛弃疾的热血。</strong><br><br>
+本测试通过 <strong>4个维度</strong>的 24 道情境题，为你<strong>精准匹配</strong> <strong>16 位</strong>中国历史人物中最接近你灵魂的那一位。每道题都有<strong>"看情况"选项</strong>——不必在两个极端之间二选一。支持<strong>返回修改</strong>。
+</div>
+<div class="preview-box">
+<div class="pv-label">结果示例 · 你将获得</div>
+<div class="pv-content">
+<div class="pv-symbol">竹</div>
+<div class="pv-text"><strong>灵魂符号</strong> · 雷达图 · 深度解读 · <strong>人格盲区</strong> · <strong>隐藏人格</strong> · 隐藏天赋 · 成长路径 · 职业方向 · 感情模式 · <strong>推荐书影</strong> · 灵魂伴侣 · <strong>人生宿命</strong> — 共 <strong>13+</strong> 项深度分析</div>
+</div>
+</div>
+<div class="stats">
+<div class="stat"><span class="n">24</span><span class="l">道题</span></div>
+<div class="stat"><span class="n">16</span><span class="l">种结果</span></div>
+<div class="stat"><span class="n">13+</span><span class="l">项分析</span></div>
+</div>
+<button class="btn" onclick="startTest()">开始测试</button>
+</div>
+
+<div id="s-loading" class="s-loading hidden">
+<div class="ld-title">正在匹配你的灵魂人物</div>
+<div class="ld-sub">分析 4 个维度 · 匹配 16 种历史人格 · 计算隐藏人格</div>
+<div class="loading-dots"><span></span><span></span><span></span></div>
+</div>
+
+<div id="s-question" class="hidden" style="position:relative">
+<div class="q-dim-watermark" id="qWatermark"></div>
+<div class="q-top" id="qDots"></div>
+<div class="q-info" id="qInfo"></div>
+<div class="progress"><div class="progress-fill" id="progress"></div></div>
+<div class="q-text" id="qText"></div>
+<div class="choices" id="choices"></div>
+<div id="qBack" class="q-back hidden" onclick="goBack()">← 上一题</div>
+<div id="qHint" class="q-hint"></div>
+</div>
+
+<div id="s-result" class="result hidden">
+<div class="r-label">你的历史人格</div>
+<div class="r-figure" id="rFigure"></div>
+<div class="r-tag" id="rTag"></div>
+<div class="r-keywords" id="rKeywords"></div>
+<div class="r-sym-row">
+<div class="r-sym" id="rSym"></div>
+<div class="r-sym-label" id="rSymLabel"></div>
+</div>
+<div class="radar-box" id="rRadar"></div>
+<div class="r-quote" id="rQuote"></div>
+<div class="section-title">人格深度解读</div>
+<div class="r-analysis" id="rAnalysis"></div>
+<div class="r-blind"><div class="bt">人格盲区</div><div id="rBlind"></div></div>
+<div class="r-advice"><div class="at">你的破局之道</div><div id="rAdvice"></div></div>
+<div class="r-grow"><div class="gt">你的成长路径</div><div id="rGrow"></div></div>
+<div class="r-dual"><div class="dt">你的隐藏人格</div><div id="rDual"></div></div>
+<div class="r-talent"><div class="tt">你的隐藏天赋</div><div id="rTalent"></div></div>
+<div class="r-extras">
+<div class="r-extra"><div class="el">职业方向</div><div class="eb" id="rCareer"></div></div>
+<div class="r-extra"><div class="el">感情模式</div><div class="eb" id="rLove"></div></div>
+</div>
+<div class="section-title">推荐书影</div>
+<div class="r-rec-group">
+<div class="r-rec-cat">人物相关</div>
+<div class="r-rec" id="rRec"></div>
+</div>
+<div class="r-rec-group">
+<div class="r-rec-cat">性格匹配</div>
+<div class="r-rec" id="rRec2"></div>
+</div>
+<div class="compat">
+<div class="compat-item"><div class="cl">灵魂伴侣</div><div class="cn" id="rSoul"></div><div class="ct" id="rSoulTag"></div></div>
+<div class="compat-item nemesis"><div class="cl">命中对手</div><div class="cn" id="rNemesis"></div><div class="ct" id="rNemesisTag"></div></div>
+</div>
+<div class="r-destiny"><div class="dt">你的历史宿命</div><div id="rDestiny"></div></div>
+<div class="r-actions">
+<button class="btn outline" onclick="startTest()">重新测试</button>
+<button class="btn" onclick="shareResult()">保存结果卡片</button>
+</div>
+</div>
+
+</div></div>
+<div class="foot">趣味测试 · 仅供娱乐 · 灵魂人格研究所</div>
+</div>
+
+<script>
+var Q=[
+{text:"到了一个新环境（新公司/新学校），你的状态是？",c:[
+{t:"很快就能和大家打成一片，主动找话题",d:"E"},
+{t:"观察一下氛围，等别人来找我聊",d:"I"},
+{t:"先做好自己的事，关系慢慢自然发展",d:"I"},
+{t:"主动做那个破冰的人，帮别人也消除尴尬",d:"E"},
+{t:"看氛围——聊得来的人面前我很E，陌生人面前我很I",d:"M"}]},
+{text:"连续社交三天后，你的状态是？",c:[
+{t:"越来越嗨，根本停不下来",d:"E"},
+{t:"累了，急需一个人待着回回血",d:"I"},
+{t:"还行，但晚上必须独处一会",d:"I"},
+{t:"社交对我来说像喝水一样自然，不会特别累",d:"E"},
+{t:"看跟谁——和舒服的人越聊越嗨，和不熟的人社交后很累",d:"M"}]},
+{text:"朋友临时叫你出门，但你本来计划在家待着？",c:[
+{t:"出门！宅着多无聊",d:"E"},
+{t:"婉拒，在家更舒服",d:"I"},
+{t:"看心情，但更倾向于不出去",d:"I"},
+{t:"都叫我了，肯定去",d:"E"},
+{t:"看什么事——有意思就去，没意思就不去",d:"M"}]},
+{text:"你觉得'独处'这个词对你来说？",c:[
+{t:"偶尔需要，但太多独处会闷",d:"E"},
+{t:"是常态，而且我很享受",d:"I"},
+{t:"是生活的一部分，不排斥也不追求",d:"I"},
+{t:"独处久了会闷，我需要有人陪才踏实",d:"E"},
+{t:"独处和陪伴都需要，但比例随心情浮动",d:"M"}]},
+{text:"你怎么表达观点更舒服？",c:[
+{t:"当面聊，越聊越清楚",d:"E"},
+{t:"写下来，文字更能表达我",d:"I"},
+{t:"小范围讨论，不喜欢人多",d:"I"},
+{t:"想到什么说什么，不藏着掖着",d:"E"},
+{t:"看场合——当面聊和写下来我都行，灵活切换",d:"M"}]},
+{text:"团队项目中你最自然的角色是？",c:[
+{t:"主动协调沟通，推动进展",d:"E"},
+{t:"负责执行自己那部分",d:"I"},
+{t:"幕后策划，出方案不出面",d:"I"},
+{t:"带动气氛，让大家有干劲",d:"E"},
+{t:"看团队缺什么角色，我补位",d:"M"}]},
+{text:"朋友找你倾诉感情问题，你的反应是？",c:[
+{t:"帮ta分析利弊，给出理性建议",d:"T"},
+{t:"先共情ta的感受，陪着骂就完了",d:"F"},
+{t:"理性分析但也会照顾ta情绪",d:"T"},
+{t:"我比ta还激动，一起哭",d:"F"},
+{t:"先听完再说——ta需要建议我给建议，需要陪伴我陪",d:"M"}]},
+{text:"做一个重要决定时，你最看重？",c:[
+{t:"利弊分析，理性最优解",d:"T"},
+{t:"内心感受，做了不后悔",d:"F"},
+{t:"数据和事实说话",d:"T"},
+{t:"直觉告诉我该怎么做",d:"F"},
+{t:"大事靠理性算利弊，小事凭直觉",d:"M"}]},
+{text:"看到流浪猫狗，你的第一反应？",c:[
+{t:"心疼，想带回家",d:"F"},
+{t:"想想养它的成本和可行性",d:"T"},
+{t:"先rua一下，开心就好",d:"F"},
+{t:"查查附近有没有救助站",d:"T"},
+{t:"心疼，但要先考虑现实条件",d:"M"}]},
+{text:"你更容易被什么打动？",c:[
+{t:"严密的逻辑和论证",d:"T"},
+{t:"真实的故事和情感",d:"F"},
+{t:"客观的数据和案例",d:"T"},
+{t:"一句话击中你的心",d:"F"},
+{t:"都可以打动我，关键看是否真诚",d:"M"}]},
+{text:"别人更可能怎么评价你？",c:[
+{t:"冷静、理性、讲道理",d:"T"},
+{t:"温暖、感性、重情义",d:"F"},
+{t:"有分寸感、不冲动",d:"T"},
+{t:"真诚、热血、跟着心走",d:"F"},
+{t:"不同人看到不同的我，取决于跟谁在一起",d:"M"}]},
+{text:"面对人际冲突时你倾向？",c:[
+{t:"讲道理摆事实，对错分明",d:"T"},
+{t:"先处理情绪，再处理问题",d:"F"},
+{t:"分析根本原因，找系统性解法",d:"T"},
+{t:"凭直觉判断谁对谁错",d:"F"},
+{t:"先冷静下来，再决定怎么处理",d:"M"}]},
+{text:"看到'内卷'这个词，你的想法是？",c:[
+{t:"竞争很正常，想赢就得拼",d:"P"},
+{t:"不理解，人生何必那么累",d:"L"},
+{t:"可以拼，但要有意义地拼",d:"P"},
+{t:"我选择躺平，开心最重要",d:"L"},
+{t:"不反感也不跟风，按自己的节奏来",d:"M"}]},
+{text:"你对人生目标的感受是？",c:[
+{t:"有明确目标，一直在路上",d:"P"},
+{t:"走一步看一步，随缘",d:"L"},
+{t:"有方向，但不强求",d:"L"},
+{t:"不达目的不罢休",d:"P"},
+{t:"目标会随阅历变化，不急着定死",d:"M"}]},
+{text:"遇到一个很难的机会但风险很大？",c:[
+{t:"算好风险收益，值得就冲",d:"P"},
+{t:"太折腾了，还是安稳点",d:"L"},
+{t:"不拼一下怎么知道不行",d:"P"},
+{t:"随缘吧，命里有时终须有",d:"L"},
+{t:"会纠结，但最终看值不值得",d:"M"}]},
+{text:"你怎么看待'自律'？",c:[
+{t:"自律给我自由，必须的",d:"P"},
+{t:"想自律但经常做不到",d:"L"},
+{t:"对重要的事自律就行",d:"P"},
+{t:"顺应天性，不强求自律",d:"L"},
+{t:"想自律但不刻板，灵活就好",d:"M"}]},
+{text:"十年后你希望自己的状态是？",c:[
+{t:"已经做成了一件事，站在更高处",d:"P"},
+{t:"自由自在，不为五斗米折腰",d:"L"},
+{t:"活得明白，内心丰盈",d:"L"},
+{t:"一直在路上，不断突破",d:"P"},
+{t:"内心安定最重要，外部结果随缘",d:"M"}]},
+{text:"你对'规划'的态度？",c:[
+{t:"必须有规划，按计划走",d:"P"},
+{t:"规划赶不上变化，走一步算一步",d:"L"},
+{t:"有大方向就行，细节随缘",d:"L"},
+{t:"详细规划到每一步",d:"P"},
+{t:"规划要有，但留足弹性空间",d:"M"}]},
+{text:"你做一件事最大的动力来自？",c:[
+{t:"改变现状、帮助更多的人",d:"W"},
+{t:"让自己和身边的人活得更好",d:"S"},
+{t:"被需要的感觉",d:"W"},
+{t:"内心的满足和成长",d:"S"},
+{t:"有时为别人，有时为自己，不矛盾",d:"M"}]},
+{text:"你更欣赏哪种人？",c:[
+{t:"心系天下，有家国情怀",d:"W"},
+{t:"活得通透，自得其乐",d:"S"},
+{t:"用才能造福他人",d:"W"},
+{t:"不为世俗所累，活出自我",d:"S"},
+{t:"既能影响世界又能活好自己的人",d:"M"}]},
+{text:"如果有一笔钱你会优先？",c:[
+{t:"投入一个能影响更多人的项目",d:"W"},
+{t:"让自己的生活品质提升",d:"S"},
+{t:"捐给需要的人或事业",d:"W"},
+{t:"存着，安全感最重要",d:"S"},
+{t:"先改善自己，有余力再帮别人",d:"M"}]},
+{text:"你觉得人生最大的意义在于？",c:[
+{t:"留下痕迹，被后人记住",d:"W"},
+{t:"活好当下每一刻",d:"S"},
+{t:"让世界因你而不同",d:"W"},
+{t:"认识自己，活出自己",d:"S"},
+{t:"不同阶段有不同答案",d:"M"}]},
+{text:"面对社会不公你的反应？",c:[
+{t:"想做点什么改变它",d:"W"},
+{t:"管好自己就行",d:"S"},
+{t:"尽我所能发声",d:"W"},
+{t:"不在我的控制范围",d:"S"},
+{t:"力所能及就做点什么",d:"M"}]},
+{text:"你心中的'成功'是？",c:[
+{t:"被历史记住",d:"W"},
+{t:"内心丰盈自洽",d:"S"},
+{t:"推动了社会进步",d:"W"},
+{t:"按自己的方式过一生",d:"S"},
+{t:"活得明白，也做了点有意义的事",d:"M"}]}
+];
+
+var R={
+"ETPW":{f:"武则天",t:"野心型破局者",k:"野心 · 决断 · 不认命 · 掌控感",sym:"凤",
+q:"日月凌空，万物生长。我命由我，不由天。",
+radar:[85,60,95,90,75,50],
+a:"<p>你是天生的破局者。别人看到规则，你看到的是规则背后可以被改写的逻辑。你不害怕'野心'这个词——你觉得承认自己想赢，比假装不在乎酷多了。</p><p>武则天从才人到女皇，走的不是运气，是'我不认命'四个字。你也是一样：人生给你设限，你就掀桌子重来。你不是没有犹豫过，但你发现犹豫的成本比行动更高，于是你选择先干了再说。</p><p>你的破局在于：<strong>公</strong>，是用实力和手腕重新定义游戏规则；<strong>私</strong>，是在孤独的顶峰上学会和自己相处。高处不胜寒，但你的灵魂本就不适合待在谷底。</p>",
+blind:"你太相信'我来搞定'的可靠性，低估了示弱的力量——你把'被需要'误当成'被爱'。",
+adv:"野心不是贬义词。敢于承认'我想要'的人，比假装'无所谓'的人走得更远。但真正的掌控感，不是控制一切，是在不确定中依然稳住自己。",
+grow:"学会在柔软和锋利之间切换。武则天最厉害的不是狠，是知道什么时候该狠、什么时候该柔。你的下一步：培养'被讨厌的勇气'之外的'被喜欢的智慧'——让盟友愿意追随你，而不只是敬畏你。",
+ht:"你有一种洞察人心的能力——谁忠谁奸，你一眼就能看穿。这不是学来的，是天赋。你的直觉比任何数据都准，学会信任它。",
+car:"创业者 · 企业高管 · 项目操盘手。你天生适合带领团队打硬仗，在不确定中做决策是你的主场。避免太细节的执行岗，你需要的是'能掌控全局'的位置。",
+lov:"你在关系中需要掌控感，容易被能力和野心吸引。爱情对你来说是'强强联合'，不是依附。你不会爱上一个你瞧不起的人。",
+rec:"书：《武则天传》 | 电影：《武则天》（刘晓庆版）",
+rec2:"书：《原则》 · 书：《从0到1》 | 电影：《社交网络》 · 电影：《华尔街之狼》",
+sm:{f:"陶渊明",t:"躺平式哲学家"},nm:{f:"诸葛亮",t:"焦虑型操盘手"},
+des:"你的人生宿命：在某个时刻，你会面临一个'是服从规则还是改写规则'的选择。选后者，你会打开一个新世界。"},
+
+"ETPS":{f:"嬴政",t:"铁血一统者",k:"果断 · 控制 · 格局 · 孤独",sym:"龙",
+q:"六合之内，皇帝之土。但孤，始终是孤。",
+radar:[70,55,95,70,70,45],
+a:"<p>你是那种'既然要做，就做到极致'的人。不鸣则已，一鸣惊人。嬴政横扫六国，书同文车同轨，不是因为他运气好，是他把所有精力集中在了一个目标上——并且不接受任何'差不多就行'。</p><p>你可能也一样：一旦决定了方向，你的执行力惊人。你不在乎别人怎么看你，你在乎事情做没做成。这种'不成功便成仁'的劲头让你很强大，但也让你很累。</p><p>你的孤独在于：站在高处的人，往往没人能说真心话。嬴政晚年追求长生不老，何尝不是一种孤独的极致表现——他觉得这个世界上没有人配和他对话了。</p>",
+blind:"你把'效率'当成了唯一标准，忘了有些人需要慢下来才能跟上——你把'不理解'当成了'不重要'。",
+adv:"学会分权。嬴政什么都抓在手里，结果二世而亡。你也是'交给别人不放心'的人，但人的精力有上限。真正的强者不是什么都自己扛，是找到对的人一起扛。",
+grow:"学会分权和信任。秦始皇什么都抓在手里，结果二世而亡。你的下一步：从'我做得最好'走向'我能找到做得最好的人'——这不是退步，是更高维度的能力。",
+ht:"你的专注力是超能力——一旦锁定目标，全世界都拦不住你。这种'不成功便成仁'的劲头，多数人一辈子都没有。你的行动力是你最锋利的剑。",
+car:"战略规划 · 技术架构师 · 创始人。你适合做从0到1的开拓者，在有清晰目标的环境中爆发力极强。但要注意团队管理——你的高标准容易让身边人窒息。",
+lov:"你对感情极其专一但不善表达。你的爱是'用行动证明'，而非甜言蜜语。一旦认定，至死不渝。但对方需要能理解你的沉默。",
+rec:"书：《大秦帝国》 | 电影：《英雄》",
+rec2:"书：《孙子兵法》 · 书：《深度工作》 | 电影：《教父》 · 电影：《奥本海默》",
+sm:{f:"苏轼",t:"松弛感天花板"},nm:{f:"屈原",t:"殉道型理想者"},
+des:"你的人生宿命：你会做成一件很多人觉得不可能的事，代价是过程中你需要独自承受无人理解的孤独。"},
+
+"ETLW":{f:"管仲",t:"务实型操盘手",k:"务实 · 策略 · 享受 · 知人",sym:"棋",
+q:"仓廪实而知礼节，衣食足而知荣辱。",
+radar:[80,65,70,80,65,70],
+a:"<p>你是那种'既要又要'的人——既要做成事，又要享受生活。管仲辅佐齐桓公称霸，自己也'富拟于公室'，活得滋润。他不觉得享受和成就是矛盾的，他要在成事的同时活得好。</p><p>你可能也一样：你很会权衡利弊，知道在什么时候该拼、什么时候该歇。你不是拼命三郎型，你是精算师型——每一步都算好了投入产出比。你的社交能力很强，能把不同的人拧成一股绳。</p><p>管仲最厉害的不是会算账，而是有'尊王攘夷'的大格局——务实之上，还有理想。否则他只是一个精明的商人，不会成为千古第一名相。</p>",
+blind:"你太擅长权衡利弊，在该冲动时还在算账——你把'聪明'当成了'智慧'。",
+adv:"别让'务实'变成'短视'。务实是你的底色，但在该有理想的时候，也要敢想大一点。管仲之所以是管仲，不只因为他会算账，更因为他有'尊王攘夷'的格局。",
+grow:"在务实之上加点理想主义。管仲之所以是管仲，不只因为会算账，更因为有'尊王攘夷'的格局。你的下一步：找到你的'尊王攘夷'——那个让你愿意放下精算、全情投入的理想。",
+ht:"你有一种'乱中求胜'的能力——越是复杂的局面，你越能找到最优解。这种直觉不是分析出来的，是天赋。你在混乱中的冷静，是所有人最想拥有的靠山。",
+car:"运营总监 · 商务拓展 · 咨询顾问。你是天生的资源整合者，在复杂局面中找到最优解是你的强项。适合需要'既要又要'的岗位。",
+lov:"你很会经营关系，知道何时浪漫何时务实。伴侣会觉得你'靠谱又有情趣'。但你的精明有时会让对方觉得你不够真心。",
+rec:"书：《管子》 | 电视剧：《东周列国》",
+rec2:"书：《穷查理宝典》 · 书：《思考，快与慢》 | 电影：《点球成金》 · 电影：《大空头》",
+sm:{f:"李清照",t:"清醒浪漫主义者"},nm:{f:"辛弃疾",t:"热血理想主义者"},
+des:"你的人生宿命：你会在'享受当下'和'做大事业'之间找到一个平衡点，那个点就是你的主场。"},
+
+"ETLS":{f:"刘邦",t:"市井型赢家",k:"务实 · 知人 · 变通 · 大心脏",sym:"犬",
+q:"吾不如也。然吾能用之，此所以取天下也。",
+radar:[80,60,75,55,60,80],
+a:"<p>你是那种'看起来不怎么样，但最后赢了'的人。刘邦论武力不如项羽，论谋略不如张良，但他会用人，能屈能伸，该认怂就认怂，该翻脸就翻脸。市井出身，最终得了天下。</p><p>你可能也一样：不是最聪明的，不是最能干的，但你有一种'大心脏'——输得起，弯得下腰，拿得起放得下。别人在纠结面子，你在算里子。</p><p>你的破局在于：别被'运气好'的自我设限困住。刘邦从来不觉得自己了不起，但他的'不起眼'恰恰是最大的武器。你的务实和变通是你的天赋，但偶尔也要有点'我想做大事'的野心。</p>",
+blind:"你太相信'弯得下腰'的生存智慧，弯多了就忘了本来想站多高——你把'活下来'当成了'活得好'。",
+adv:"别总觉得自己'不配'。刘邦要是不想当皇帝，一辈子就是个亭长。你的务实是武器，但偶尔也要允许自己有野心——哪怕只是想想。",
+grow:"允许自己有野心。刘邦要是不想当皇帝，一辈子就是个亭长。你的下一步：从'我不行'走向'凭什么不是我'——你的接地气和大心脏，在乱世中是最强生存力，别浪费它。",
+ht:"你有一种'让人愿意跟着你'的磁场。不是魅力，是亲和力——别人在你身边会觉得很放松。这是最被低估的领导力，也是最难得的。",
+car:"销售 · 市场营销 · 社区运营 · 创业。你的'接地气'和'大心脏'在需要人际经营和灵活应变的领域是王牌。你适合在混乱中建立秩序。",
+lov:"你的魅力在于'接地气'，不刻意撩别人就喜欢跟你待着。但你的感情需要新鲜感维持，长情不是你的强项，需要刻意经营。",
+rec:"书：《楚汉列传》 | 电影：《王的盛宴》",
+rec2:"书：《影响力》 · 书：《人性的弱点》 | 电影：《阿甘正传》 · 电影：《当幸福来敲门》",
+sm:{f:"杜甫",t:"忧世型诗人"},nm:{f:"武则天",t:"野心型破局者"},
+des:"你的人生宿命：你会在一个不起眼的地方起步，靠的不是才华而是格局，最终走到所有人意想不到的位置。"},
+
+"EFPW":{f:"辛弃疾",t:"热血理想主义者",k:"热血 · 豪迈 · 意难平 · 行动派",sym:"剑",
+q:"醉里挑灯看剑，梦回吹角连营。心里有火的人，不该假装不冷。",
+radar:[80,85,85,85,80,50],
+a:"<p>你心里有一团火，从小烧到大。你见不得不公平，忍不了平庸，总觉得自己应该做点什么、改变点什么。辛弃疾22岁带五十骑闯五万人大营，活捉叛将——这种疯狂的事你骨子里也想干一次。</p><p>但现实往往给你浇冷水。稼轩居士一生都在'醉里挑灯看剑'——他有最大的热血，却撞上了最冷的时代。你可能也一样：空有一腔抱负，找不到用武之地。</p><p>你的破局在于：不等世界给你舞台，自己搭一个。辛弃疾把满腔热血写成了词，你也要找到你的'词'。</p>",
+blind:"你的意难平太重，把'没做成的'看得比'正在做的'更重要——你把'遗憾'当成了'深情'。",
+adv:"别让那团火灭了——这个世界，总得有人热血着。意难平不是失败，是你还在乎。还在乎的人，才有改变的可能。",
+grow:"找到你的'词'。辛弃疾把满腔热血写成了词，你也要找到你的表达方式。你的下一步：别等世界给你舞台，自己搭一个——哪怕一开始只有三个观众。",
+ht:"你的热情有感染力——你不是一个人热血，你能点燃别人。这种感召力是最稀缺的领导力。你一开口，别人就想跟着你干。",
+car:"公益 · 教育 · 内容创作 · 社会创新。你适合做有使命感的工作，在能'改变点什么'的岗位上发挥最强能量。避免纯商业无意义的重复劳动。",
+lov:"你爱得热烈，一旦认定不轻易放手。但你的'意难平'容易投射到伴侣身上——别让ta来承载你所有的期望。",
+rec:"书：《辛弃疾传》 | 电视剧：《辛弃疾1162》",
+rec2:"书：《活出生命的意义》 · 书：《平凡的世界》 | 电影：《死亡诗社》 · 电影：《勇敢的心》",
+sm:{f:"司马迁",t:"沉默记录者"},nm:{f:"刘邦",t:"市井型赢家"},
+des:"你的人生宿命：你心里那团火永远不会灭。关键不是找到出口，而是找到一种让火焰照亮而非烧毁自己的方式。"},
+
+"EFPS":{f:"李白",t:"浪漫主义诗仙",k:"自由 · 才华 · 浪漫 · 不羁",sym:"月",
+q:"天生我材必有用，千金散尽还复来。",
+radar:[90,90,75,55,95,65],
+a:"<p>你是天生的浪漫主义者，活在这个世界但不属于这个世界。李白'天子呼来不上船，自称臣是酒中仙'，他的自由是骨子里的，不是装出来的。你也是一样：你心里有一种对自由的执念，比大多数人都要强烈。</p><p>你可能也一样：你很有才华，但你的才华往往没有'用对地方'。李白一辈子想做政治家，却成了诗人。你的痛苦可能也来自于此——你以为自己想走这条路，但你的灵魂其实适合另一条。</p><p>但正是这种'错位'，造就了你的独特。李白的诗之所以惊天地泣鬼神，恰恰因为他不是一个安分的人。</p>",
+blind:"你太追求自由的姿态，把'不负责任'包装成了'不羁'——你把'逃离'当成了'自由'。",
+adv:"接受你的'不安分'。你不是不靠谱，你是另一种靠谱——对自由的忠诚。但自由不等于漂泊，找到你愿意停下来的那个港湾，你的浪漫才有重量。",
+grow:"找到你愿意停下来的港湾。自由不等于漂泊，自由是'我可以走，但我选择留'。你的下一步：在自由和责任之间找到平衡点——那个点不在别处，在你心里。",
+ht:"你的直觉比你的理性更准。你'感觉到了'的东西，往往事后证明是对的。这种直觉力是天赋，别用'不够理性'来否定它。你的直觉是你最好的导航。",
+car:"创意总监 · 艺术家 · 旅行博主 · 作家。你需要能发挥想象力和个性的位置，格子间是你的牢笼。你的才华在自由中绽放，在束缚中枯萎。",
+lov:"你的爱情是'一见钟情型'。你需要灵魂共振，否则很快觉得无聊。你最容易爱上'跟你不像但让你好奇'的人。",
+rec:"书：《李白传》 | 电影：《妖猫传》",
+rec2:"书：《月亮与六便士》 · 书：《人间词话》 | 电影：《白日梦想家》 · 电影：《海上钢琴师》",
+sm:{f:"班昭",t:"温柔的理性"},nm:{f:"王阳明",t:"知行合一者"},
+des:"你的人生宿命：你会经历一次'自由还是安稳'的选择。选自由你会成为传奇，选安稳你会遗憾。"},
+
+"EFLW":{f:"苏轼",t:"松弛感天花板",k:"达观 · 有趣 · 创造力 · 随遇而安",sym:"竹",
+q:"竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。",
+radar:[90,85,50,75,90,85],
+a:"<p>恭喜你，你是这世界上最难被打败的那种人——因为你根本不在乎被打败。苏轼一生被贬了三次，越贬越远，他在黄州发明东坡肉，在惠州日啖荔枝三百颗，在海南顺手搞了个'东坡笠'。</p><p>你也是这样的人：人生给你柠檬，你做柠檬水；人生给你一巴掌，你说'这手法不错'。不是你没心没肺，而是你看透了——与其和命运较劲，不如先吃好这顿饭。</p><p>你的破局在于：把这份松弛变成创造力。苏东坡之所以是苏东坡，不只因为他想得开，更因为他在想开的同时写出了'大江东去'。松弛是你的底色，但别让它变成逃避的借口。</p>",
+blind:"你的松弛感太强，在该较劲时选择了'算了'——你把'看开了'当成了'解决了'。",
+adv:"你心里有光，就让它照出来。松弛和闪闪发光，可以同时存在。真正的松弛，不是躺平不动，是在风浪里依然能笑着写诗。",
+grow:"把松弛变成创造力。松弛是你的底色，但别让它变成逃避。你的下一步：在'想得开'的基础上，加上'做得出来'——苏轼之所以是苏轼，不只因为想得开，更因为写出了大江东去。",
+ht:"你有一种'把苦难变成创作素材'的能力。别人遇到挫折会崩溃，你会说'这个可以写'。这种转化力是顶级天赋——你的人生没有白走的路，每一步都能变成素材。",
+car:"全职创作者 · 自由职业 · 品牌策划 · 用户体验。你适合能发挥创造力和弹性的工作，死板的流程会磨灭你的灵气。你的松弛感在创意行业是顶级天赋。",
+lov:"你是最好的伴侣型——有趣、包容、不给人压力。但你的'无所谓'有时会让对方觉得你不够在乎。偶尔认真一次，效果惊人。",
+rec:"书：《苏东坡传》（林语堂） | 纪录片：《苏东坡》",
+rec2:"书：《被讨厌的勇气》 · 书：《心流》 | 电影：《人生果实》 · 电影：《小森林》",
+sm:{f:"嬴政",t:"铁血一统者"},nm:{f:"诸葛亮",t:"焦虑型操盘手"},
+des:"你的人生宿命：你会被命运'贬'到意想不到的地方，但在那里你会找到连你自己都没想到的宝藏。"},
+
+"EFLS":{f:"唐伯虎",t:"风流型才子",k:"才情 · 洒脱 · 享乐 · 不羁",sym:"花",
+q:"别人笑我太疯癫，我笑他人看不穿。",
+radar:[85,85,45,50,85,80],
+a:"<p>你是那种'活着就是为了尽兴'的人。唐伯虎才华横溢却科举被冤，干脆不装了——'别人笑我太疯癫，我笑他人看不穿'。他画画、喝酒、追秋香，活得痛快淋漓。</p><p>你可能也一样：你骨子里有一种'不伺候'的气质。不是没能力正经，而是你觉得正经太无聊了。你有才华，但你更在乎活着的乐趣。你不想被任何标签框住——你是自由的。</p><p>但唐伯虎晚年在桃花坞种花写诗，表面潇洒，其实心里有未愈合的伤。自由的人，往往是因为被伤过才选择了自由。</p>",
+blind:"你太享受'不在乎'的姿态，真的开始不在乎不该不在乎的事——你把'潇洒'当成了'答案'。",
+adv:"确认自由不是逃避的借口。你可以选择不正经地活，但别让'不在乎'变成不敢在乎。唐伯虎的洒脱里藏着痛，你的洒脱里最好藏着爱。",
+grow:"确认自由不是逃避。你可以不正经地活，但别让'不在乎'变成不敢在乎。你的下一步：允许自己认真一次——认真爱一个人，认真做一件事，认真活一段时间。",
+ht:"你有一种'让无聊变有趣'的能力。平淡的事到你手里就变得好玩了。这种创造力是别人学不来的——你是天生的氛围制造机。",
+car:"设计师 · 自媒体 · 娱乐行业 · 创意类。你的才华和个性在创意领域是核心竞争力。你需要'好玩'的工作，无聊的工作会让你枯萎。",
+lov:"你是天生万人迷，但你在等一个'配得上你的不正经'的人。桃花多但真心少，一旦遇到对的人，你会收起所有风流。",
+rec:"书：《唐伯虎传》 | 电影：《唐伯虎点秋香》",
+rec2:"书：《人间草木》（汪曾祺） · 书：《浮生六记》 | 电影：《布达佩斯大饭店》 · 电影：《了不起的盖茨比》",
+sm:{f:"屈原",t:"殉道型理想者"},nm:{f:"武则天",t:"野心型破局者"},
+des:"你的人生宿命：你会在别人觉得你'废了'的时候，活出一种让人嫉妒的自在。"},
+
+"ITPW":{f:"诸葛亮",t:"焦虑型操盘手",k:"谋略 · 完美主义 · 责任感 · 内耗",sym:"灯",
+q:"非淡泊无以明志，非宁静无以致远。有些事你控制不了，放下不是认输。",
+radar:[40,60,85,90,80,40],
+a:"<p>你是天生的操盘手。凡事预则立，不预你心里就慌。你习惯把所有可能性都想一遍，你的人生信条是'谋事在人'——但问题是，你想的太多了。</p><p>诸葛亮六出祁山，每一次都计划得天衣无缝，但天意不在他。你的焦虑也来自于此：你太想把事情做对了，太想对所有人负责了，以至于你忘了——有些事，不是你能控制的。</p><p>你的破局在于：学会'鞠躬尽瘁'之后的'死而后已'——不是真的去死，而是接受'我已经尽力了'。完美主义是你的铠甲也是你的枷锁。</p>",
+blind:"你太相信'想到就能做到'，把'没想到的'当成了'不存在'——你把'尽力了'当成了'够了'。",
+adv:"偶尔允许自己'差不多就行了'，天不会塌。诸葛亮最厉害的不是智谋，是那份定力。学会放下控制欲，你会发现世界不会因此崩塌。",
+grow:"学会'差不多就行'。诸葛亮最厉害的不是智谋，是那份定力。你的下一步：从'我要想到万无一失'走向'七成把握就动'——你的七成，已经是别人的十成。",
+ht:"你的系统化思维是超能力——别人看到碎片，你看到模式。这种'结构化思维'在AI时代依然是最稀缺的人类能力。你的脑力就是你最好的武器。",
+car:"数据分析 · 产品经理 · 风控管理 · 科研。你在需要系统性思考和规划的领域是天花板级别。但要注意：你不是AI，允许自己有'不完美'的时刻。",
+lov:"你在感情中也是'操盘手'——你会规划每一步。但爱情不是你计划得来的，学会'顺其自然'，你会轻松很多。",
+rec:"书：《诸葛亮传》 | 电视剧：《大军师司马懿》",
+rec2:"书：《反脆弱》 · 书：《精要主义》 | 电影：《模仿游戏》 · 电影：《至暗时刻》",
+sm:{f:"唐伯虎",t:"风流型才子"},nm:{f:"苏轼",t:"松弛感天花板"},
+des:"你的人生宿命：你需要学会一件事——有些仗打不赢不是你的错。放下执念的那一刻，你才真正自由。"},
+
+"ITPS":{f:"王阳明",t:"知行合一者",k:"自律 · 理想 · 感召力 · 内省",sym:"心",
+q:"知而不行，只是未知。心外无物，心外无理。",
+radar:[55,65,80,65,75,70],
+a:"<p>你是那种'想清楚了就必须做'的人。很多人停在想的阶段，但你不一样——你信奉'知行合一'，知道了不做到，等于不知道。王阳明被贬到龙场，在生死边缘悟出'心即理'，不是靠空想，是在绝境中逼自己想通然后做通。</p><p>你可能也一样：经历过一些事，想明白了一些道理，然后你的人生就拐了个弯。你不是那种空谈理想的人，你是把理想拆成行动步骤的人。</p><p>你的破局在于：别让'知行合一'变成新的枷锁。你对自己要求太高了，总觉得'知道但没做到'就是失败。但王阳明也说'在事上磨'——成长是在具体的事里磨出来的。</p>",
+blind:"你太相信'想通了就能做到'，把'还没做到'当成'还没想通'——你把'悟'当成了'终点'。",
+adv:"你不需要一步到位。龙场悟道之前，王阳明也迷茫了半辈子。允许自己'在路上'，本身就是一种修行。",
+grow:"允许自己'在路上'。龙场悟道之前，王阳明也迷茫了半辈子。你的下一步：别急着一步到位，在事上磨——你的每一个经历都在为你的'悟道'积累素材。",
+ht:"你有一种'在绝境中想通'的能力。别人崩溃的时候，你反而会开悟。这种'逆境悟性'是顶级天赋——越是难的局面，你越能想通别人想不通的事。",
+car:"教练 · 导师 · 心理咨询 · 企业管理。你天生的感召力和知行合一的特质在'影响人'的领域是顶级武器。你适合做'点燃别人'的工作。",
+lov:"你需要精神层面的共鸣。聊不到一起去的人，再好看也没用。你的理想伴侣是可以一起'格物致知'的人。",
+rec:"书：《传习录》 | 电视剧：《王阳明》",
+rec2:"书：《活法》（稻盛和夫） · 书：《当下的力量》 | 电影：《甘地传》 · 电影：《和平战士》",
+sm:{f:"李白",t:"浪漫主义诗仙"},nm:{f:"陶渊明",t:"躺平式哲学家"},
+des:"你的人生宿命：你会经历一次'认知坍塌'，然后从废墟中重建一套属于你自己的信念体系。那之后，你不再容易被任何人动摇。"},
+
+"ITLW":{f:"司马迁",t:"沉默记录者",k:"隐忍 · 洞察 · 笔力 · 不朽",sym:"笔",
+q:"究天人之际，通古今之变，成一家之言。",
+radar:[35,65,55,80,85,60],
+a:"<p>你是那种在人群中不显山露水，但什么都看在眼里的人。司马迁遭受宫刑之辱，没有崩溃，而是用一支笔写出了《史记》——他选择用作品说话。</p><p>你可能也一样：不争口头上的输赢，但你会把所见所感记录下来、沉淀下来。你的力量不在嘴上，在笔上（或键盘上）。你觉得看清一个时代的本质，比参与其中更重要。</p><p>你的破局在于：从'记录者'走向'参与者'。司马迁写完《史记》也影响了后世两千年——记录本身就是参与。但如果你心里还有想做的事，别只记录，去做。</p>",
+blind:"你太习惯'记录者'的位置，把'不参与'包装成了'更清醒'——你把'看穿了'当成了'放下了'。",
+adv:"你的笔比你的拳头更有力。但如果你心里还有想做的事、想改变的现状，别只记录，去做。沉默的记录者也可以是沉默的改变者。",
+grow:"从记录者走向参与者。你的笔比拳头更有力，但如果你心里还有想做的事，别只记录，去做。你的下一步：把'看'变成'做'——哪怕只做一件，也比写一万字更有力量。",
+ht:"你的洞察力是超能力——你看人看事，一针见血。这不是分析出来的，是直觉。你的沉默之下，藏着千军万马。别人低估你的时候，你其实在看穿所有人。",
+car:"记者 · 研究员 · 编剧 · 内容行业。你的洞察力和笔力在文字相关的领域是核心竞争力。你适合做'记录时代'的工作。",
+lov:"你不轻易动心，但一旦动心极其深沉。你的爱是默默关注、暗中守护。需要对方有耐心读懂你的沉默。",
+rec:"书：《史记》 | 纪录片：《司马迁》",
+rec2:"书：《人类简史》 · 书：《枪炮、病菌与钢铁》 | 电影：《辛德勒的名单》 · 电影：《华盛顿邮报》",
+sm:{f:"辛弃疾",t:"热血理想主义者"},nm:{f:"唐伯虎",t:"风流型才子"},
+des:"你的人生宿命：你经历过的不公和苦难，最终会变成你最重要的作品。你的笔，比你的拳头更有力。"},
+
+"ITLS":{f:"班昭",t:"温柔的理性",k:"沉静 · 博学 · 坚韧 · 幕后力量",sym:"兰",
+q:"不鸣则已，一鸣惊人。你的温柔，是你最大的力量。",
+radar:[35,60,50,55,75,85],
+a:"<p>你是那种'不鸣则已一鸣惊人'的人。不争不抢不代表没实力，只是你觉得没必要。班昭是班固的妹妹，在哥哥死后接手完成《汉书》，是中国第一位女历史学家。她不张扬，但她的笔比千军万马更有力。</p><p>你可能也一样：在人群中不是最亮的那个，但做事最靠谱。你不需要被看见才肯发光——你觉得把自己的事做好，本身就是意义。</p><p>你的破局在于：不要永远待在幕后。班昭最终被皇帝请出山做皇后和嫔妃的老师，从幕后走到了台前。你的温柔和理性是最大的武器，但别让温柔变成隐忍。</p>",
+blind:"你太习惯'不争'的位置，把'被忽视'包装成了'不需要'——你把'隐忍'当成了'从容'。",
+adv:"该站出来的时候，站出来。你的力量不需要别人的允许才能释放。温柔的人不一定软弱，你的温柔之下，藏着千钧之力。",
+grow:"该站出来时站出来。你的力量不需要别人的允许才能释放。你的下一步：从'做好自己的事'走向'被看见'——不是炫耀，是让你的价值被更多人用到。",
+ht:"你有一种'让别人低估你然后惊艳所有人'的能力。你的温柔之下，藏着千钧之力。当所有人以为你是软柿子的时候，你的实力会让他们措手不及。",
+car:"编辑 · 学术研究 · 教育 · 行政管理。你的沉静和靠谱在需要深度和专业性的领域是稀缺品。你适合做'幕后定乾坤'的角色，但别永远甘于幕后。",
+lov:"你是最温柔的伴侣，但温柔下有自己的底线。你不争，但也绝不被忽视。你的理想伴侣是能看见你内在力量的人。",
+rec:"书：《后汉书·列女传》 | 电视剧：《班淑传奇》",
+rec2:"书：《安静》（苏珊·凯恩） · 书：《沉思录》 | 电影：《隐藏人物》 · 电影：《相助》",
+sm:{f:"李白",t:"浪漫主义诗仙"},nm:{f:"嬴政",t:"铁血一统者"},
+des:"你的人生宿命：你会在某个时刻被推到台前。别躲——你的温柔和理性，恰恰是这个世界最需要的力量。"},
+
+"IFPW":{f:"屈原",t:"殉道型理想者",k:"理想 · 清高 · 孤勇 · 不妥协",sym:"莲",
+q:"举世皆浊我独清，众人皆醉我独醒。",
+radar:[45,90,80,85,85,35],
+a:"<p>你是那种'宁可玉碎，不为瓦全'的人。屈原宁死不愿与世俗同流合污，他的理想主义不是嘴上说说，是真的拿命在赌。举世皆浊他独清，众人皆醉他独醒。</p><p>你可能也一样：你心里有一条线，死都不过。你可以接受失败，但不能接受违背自己。这种不妥协让你在人群中显得格格不入，但也让你拥有一种别人偷不走的干净。</p><p>但理想主义如果只走向自我毁灭，那就太可惜了。屈原投身汨罗江，他的理想成了绝唱——但如果他活着呢？</p>",
+blind:"你太坚持'独清'的姿态，把'孤独'当成了'高洁'的证明——你把'不妥协'当成了'不可能错'。",
+adv:"学会'和光同尘'。想让理想落地而不是殉葬，偶尔需要'在泥里走，但不被泥染'。这不叫妥协，叫策略。活着的理想主义者，比死去的殉道者更有力量。",
+grow:"学会'和光同尘'。在泥里走但不被泥染，这不叫妥协叫策略。你的下一步：从'独清'走向'浊中清'——不是同流合污，是在浊世中保持清醒的同时找到落地的方式。",
+ht:"你的'干净'是天赋。在这个浊世里，保持内心的清澈比成功更难。你的不妥协本身就是一种力量——很多人想有你的底线，但他们做不到。",
+car:"艺术创作 · 独立媒体 · 理想主义创业。你适合做有信念感的工作，在能坚持自我底线的环境中发光。商业味太浓的地方会让你窒息。",
+lov:"你爱得决绝，要么全给要么全不给。伴侣要么是知音，要么你宁缺毋滥。你的标准极高，但这是你对自己的忠诚。",
+rec:"书：《离骚》 | 电影：《屈原》",
+rec2:"书：《理想国》 · 书：《苏菲的世界》 | 电影：《荒野生存》 · 电影：《心灵奇旅》",
+sm:{f:"管仲",t:"务实型操盘手"},nm:{f:"嬴政",t:"铁血一统者"},
+des:"你的人生宿命：你会面临'同流合污'还是'独善其身'的选择。但第三条路存在——在泥里走，但不被泥染。"},
+
+"IFPS":{f:"李清照",t:"清醒浪漫主义者",k:"敏感 · 才华 · 独立 · 深情",sym:"梅",
+q:"生当作人杰，死亦为鬼雄。看清楚了依然选择深情，才是真正的勇敢。",
+radar:[45,90,70,55,90,65],
+a:"<p>你有一颗既柔软又锋利的心。你能为落花流泪，也能在国破家亡时写下'生当作人杰，死亦为鬼雄'。你是浪漫的，但不是盲目的——你看得很清楚，只是看清楚了依然选择深情。</p><p>李清照是宋词里最亮的一颗星。前半生'赌书消得泼茶香'的甜蜜，后半生'寻寻觅觅冷冷清清'的凄凉。她什么都经历过了，但诗词里始终有一种不肯屈服的骨气。</p><p>你的破局在于：接受深情但不被深情吞噬。你的敏感是天赋，让你比别人更懂得美；但敏感也是双刃剑，让你比别人更容易受伤。</p>",
+blind:"你太习惯用'深情'定义自己，把'痛'当成了'活着'的证据——你把'感受深刻'当成了'活得深刻'。",
+adv:"学学李清照——哭完了，擦干眼泪，再写一首更好的词。深情不是软弱，是你的铠甲。但铠甲太重也会压垮你，偶尔允许自己不那么深情。",
+grow:"学学李清照——哭完了，擦干眼泪，写一首更好的词。你的下一步：深情是铠甲不是枷锁，允许自己偶尔不深情——这不叫冷漠，叫自我保护。",
+ht:"你有一种'在痛苦中创造美'的能力。别人崩溃时毁灭，你崩溃时创造。这种转化力是最顶级的天赋——你的痛，最终会变成你的作品。",
+car:"文字创作 · 设计 · 品牌 · 心理咨询。你的敏感和洞察力在需要理解人性的领域是顶级天赋。你适合做'把说不清的东西说清楚'的工作。",
+lov:"你是'看透了还爱'的人。深情不是天真，是选择。但你的敏感需要被温柔对待，你需要一个'接得住你所有情绪'的人。",
+rec:"书：《李清照传》 | 电视剧：《清风明月佳人》",
+rec2:"书：《一间自己的房间》 · 书：《第二性》 | 电影：《时时刻刻》 · 电影：《小妇人》",
+sm:{f:"管仲",t:"务实型操盘手"},nm:{f:"刘邦",t:"市井型赢家"},
+des:"你的人生宿命：你会经历一段极致的甜蜜和一段极致的苦。你的力量在于：哭完了，擦干眼泪，写一首更好的词。"},
+
+"IFLW":{f:"杜甫",t:"忧世型诗人",k:"共情 · 忧患 · 记录 · 悲悯",sym:"舟",
+q:"安得广厦千万间，大庇天下寒士俱欢颜。",
+radar:[35,90,50,85,85,50],
+a:"<p>你是那种'自己淋过雨，所以总想给别人撑伞'的人。杜甫自己穷困潦倒、茅屋被秋风所破，却写下'安得广厦千万间，大庇天下寒士俱欢颜'。他的苦难没有让他变得冷漠，反而让他更懂得别人的苦。</p><p>你可能也一样：你有一种近乎本能的共情能力——看到别人的苦难，你会心疼；看到不公，你会愤怒。你的感受力比常人深好几层，这让你既能写出好东西，也容易背负太多情绪。</p><p>你的破局在于：允许自己'不被所有人的苦难压垮'。你的悲悯是天赋，但你也配得上自己的广厦。</p>",
+blind:"你太习惯为别人操心，把'不照顾自己'包装成了'更高尚'——你把'共情'当成了'使命'。",
+adv:"在为天下寒士操心之前，先照顾好自己那间茅屋。你不需要拯救所有人才能证明自己的价值。你的共情是光，但光照不到自己也是一种遗憾。",
+grow:"在为天下寒士操心之前，先照顾好自己。你的下一步：从'我为别人撑伞'走向'我也有自己的屋檐'——这不是自私，是让你的悲悯可持续。",
+ht:"你的共情力是超能力——你能感受到别人感受不到的东西。这不是敏感，是天赋。你的文字能治愈人，你的理解能温暖人。这个世界需要更多像你这样的人。",
+car:"社会工作 · 医疗 · 教育 · 公益。你的共情力在'帮助人'的领域是顶级天赋。但要注意设立边界——你太容易把别人的苦当成自己的。",
+lov:"你是'会记住对方所有喜好'的人。爱是细节式的、默默付出的。但你也渴望被照顾，别总是只付出不索取。",
+rec:"书：《杜甫传》 | 纪录片：《杜甫》",
+rec2:"书：《追风筝的人》 · 书：《活着》 | 电影：《何以为家》 · 电影：《聚焦》",
+sm:{f:"刘邦",t:"市井型赢家"},nm:{f:"辛弃疾",t:"热血理想主义者"},
+des:"你的人生宿命：你的共情能力会让你背负很多不属于你的痛苦。学会在为别人撑伞之前，先给自己搭好屋子。"},
+
+"IFLS":{f:"陶渊明",t:"躺平式哲学家",k:"恬淡 · 自然 · 不争 · 自洽",sym:"菊",
+q:"采菊东篱下，悠然见南山。选了之后不回头，才是真正的自洽。",
+radar:[30,80,35,40,70,95],
+a:"<p>你是这届年轻人最想成为的人。不为五斗米折腰，说辞职就辞职，回老家种菊花去了。你的人生哲学很简单：开心就好，不争了。</p><p>陶渊明活成了'松弛'的鼻祖。别人卷官场，他卷'采菊东篱下，悠然见南山'。不是他没本事当官——他当过，只是觉得不值得。你也是一样：看透了那些社会评价体系，选择按自己的标准活。</p><p>你的破局在于：确认'躺平'是主动选择还是被动逃避。陶渊明是真躺——他躺得有底气，有菊花，有诗，有酒，有'不为五斗米'的傲骨。</p>",
+blind:"你太习惯'退出'的姿态，把'不争取'包装成了'不想要'——你把'躺平'当成了'自洽'。",
+adv:"如果你躺得心安，那就是最好的活法；如果你心里还有未完成的遗憾，那就起来干。真正的自洽，是选了之后不回头。",
+grow:"确认躺平是主动选择。如果你心安，就是最好的活法；如果还有遗憾，就起来干。你的下一步：选了之后不回头——无论选的是哪条路，不回头才是真正的自洽。",
+ht:"你的'自洽力'是顶级天赋。别人一辈子都在和外界较劲，你天生就知道'关我什么事'。这种能力比成功更稀缺——多少人赢了全世界却输给了自己。",
+car:"自由职业 · 民宿 · 手作 · 慢生活博主。你适合能按自己节奏生活的工作，在'慢即是快'的领域自洽。你不需要'成功'的标签，你需要的是'自在'。",
+lov:"你需要'一起躺平'的伴侣，而不是'一起内卷'的。你的理想关系是各自舒服地待在一起，不需要刻意讨好对方。",
+rec:"书：《陶渊明集》 | 动画：《桃花源记》",
+rec2:"书：《瓦尔登湖》 · 书：《自洽》 | 电影：《菊次郎的夏天》 · 电影：《海街日记》",
+sm:{f:"武则天",t:"野心型破局者"},nm:{f:"王阳明",t:"知行合一者"},
+des:"你的人生宿命：你会在某个时刻选择'退出'。但确认那是因为你看到了更好的风景，而不是你害怕了。"}
+};
+
+var curQ=0,scores,answers=[],_ctp="";
+var dimNames=["能量方向","决策方式","行动模式","价值取向"];
+var poles=[["E","I"],["T","F"],["P","L"],["W","S"]];
+
+function startTest(){
+curQ=0;scores={E:0,I:0,T:0,F:0,P:0,L:0,W:0,S:0};answers=[];
+document.getElementById("s-welcome").classList.add("hidden");
+document.getElementById("s-loading").classList.add("hidden");
+document.getElementById("s-result").classList.add("hidden");
+var q=document.getElementById("s-question");q.classList.remove("hidden");q.classList.add("fade-in");
+showQ();
+}
+
+function showQ(){
+var q=Q[curQ],total=Q.length;
+document.getElementById("progress").style.width=((curQ+1)/total*100)+"%";
+document.getElementById("qInfo").textContent="第 "+(curQ+1)+" 题 / 共 "+total+" 题";
+document.getElementById("qText").textContent=q.text;
+var dots="";for(var i=0;i<4;i++)dots+='<div class="q-dot'+(i<=Math.floor(curQ/6)?" on":"")+'"></div>';
+document.getElementById("qDots").innerHTML=dots+'<span style="font-size:.7rem;color:var(--muted);margin-left:.3rem">'+dimNames[Math.floor(curQ/6)]+'</span>';
+var ch=document.getElementById("choices");ch.innerHTML="";
+var L=["A","B","C","D","E"];
+q.c.forEach(function(c,i){
+var b=document.createElement("button");b.className="choice"+(c.d==="M"?" mid":"");
+b.innerHTML='<span class="letter">'+L[i]+'</span>'+c.t;
+b.onclick=function(){sel(c.d)};
+ch.appendChild(b);
+});
+var dimChars=["能","思","行","志"];
+var dimHints=["你的能量，向外还是向内？","你的决定，靠脑还是靠心？","你的脚步，向前还是停驻？","你的人生，为谁而活？"];
+var curDim=Math.floor(curQ/6);
+document.getElementById("qWatermark").textContent=dimChars[curDim];
+document.getElementById("qHint").textContent=dimHints[curDim];
+var backBtn=document.getElementById("qBack");
+if(curQ>0)backBtn.classList.remove("hidden");
+else backBtn.classList.add("hidden");
+}
+
+function sel(d){
+answers[curQ]=d;
+if(d==="M"){var p=poles[Math.floor(curQ/6)];scores[p[0]]+=0.5;scores[p[1]]+=0.5;}
+else{scores[d]++;}
+curQ++;
+if(curQ<Q.length){
+var q=document.getElementById("s-question");q.classList.remove("fade-in");
+void q.offsetWidth;q.classList.add("fade-in");showQ();
+}else{
+document.getElementById("s-question").classList.add("hidden");
+var ld=document.getElementById("s-loading");ld.classList.remove("hidden");ld.classList.add("fade-in");
+setTimeout(function(){ld.classList.add("hidden");showR();},1600);
+}
+}
+
+function goBack(){
+if(curQ===0)return;
+curQ--;
+var d=answers[curQ];
+if(d==="M"){var p=poles[Math.floor(curQ/6)];scores[p[0]]-=0.5;scores[p[1]]-=0.5;}
+else if(d){scores[d]--;}
+var q=document.getElementById("s-question");q.classList.remove("fade-in");
+void q.offsetWidth;q.classList.add("fade-in");showQ();
+}
+
+function showR(){
+var tp="";
+tp+=scores.E>=scores.I?"E":"I";
+tp+=scores.T>=scores.F?"T":"F";
+tp+=scores.P>=scores.L?"P":"L";
+tp+=scores.W>=scores.S?"W":"S";
+_ctp=tp;
+var r=R[tp];
+document.getElementById("s-result").classList.remove("hidden");
+var rs=document.getElementById("s-result");rs.classList.add("fade-in");
+document.getElementById("rFigure").textContent=r.f;
+document.getElementById("rTag").textContent=r.t;
+document.getElementById("rKeywords").textContent=r.k;
+document.getElementById("rSym").textContent=r.sym;
+document.getElementById("rSymLabel").textContent="你的灵魂符号";
+document.getElementById("rQuote").textContent=r.q;
+document.getElementById("rAnalysis").innerHTML=r.a;
+document.getElementById("rBlind").textContent=r.blind;
+document.getElementById("rAdvice").textContent=r.adv;
+document.getElementById("rGrow").textContent=r.grow;
+document.getElementById("rTalent").textContent=r.ht;
+document.getElementById("rCareer").textContent=r.car;
+document.getElementById("rLove").textContent=r.lov;
+
+var recParts=r.rec.split("|");
+var recHtml="";
+recParts.forEach(function(p){
+p=p.trim();
+var colonIdx=p.indexOf("：");
+var label=colonIdx>-1?p.substring(0,colonIdx+1):"";
+var body=colonIdx>-1?p.substring(colonIdx+1):p;
+recHtml+='<div class="r-rec-item"><div class="rl">'+label.charAt(0)+'</div><div class="rb">'+p+'</div></div>';
+});
+document.getElementById("rRec").innerHTML=recHtml;
+var rec2Parts=r.rec2.split("|");
+var rec2Html="";
+rec2Parts.forEach(function(p2){
+p2=p2.trim();
+var ci2=p2.indexOf("：");
+var lb2=ci2>-1?p2.substring(0,ci2+1):"";
+rec2Html+='<div class="r-rec-item"><div class="rl">'+lb2.charAt(0)+'</div><div class="rb">'+p2+'</div></div>';
+});
+document.getElementById("rRec2").innerHTML=rec2Html;
+
+document.getElementById("rSoul").textContent=r.sm.f;
+document.getElementById("rSoulTag").textContent=r.sm.t;
+document.getElementById("rNemesis").textContent=r.nm.f;
+document.getElementById("rNemesisTag").textContent=r.nm.t;
+document.getElementById("rDestiny").textContent=r.des;
+
+var margins=[
+{dim:0,m:Math.abs(scores.E-scores.I)},
+{dim:1,m:Math.abs(scores.T-scores.F)},
+{dim:2,m:Math.abs(scores.P-scores.L)},
+{dim:3,m:Math.abs(scores.W-scores.S)}
+];
+margins.sort(function(a,b){return a.m-b.m;});
+var minDim=margins[0].dim;
+var dualArr=tp.split("");
+var flip={E:"I",I:"E",T:"F",F:"T",P:"L",L:"P",W:"S",S:"W"};
+dualArr[minDim]=flip[dualArr[minDim]];
+var dr=R[dualArr.join("")];
+var marginDesc=margins[0].m<1?"几乎五五开":"相对接近";
+document.getElementById("rDual").innerHTML=
+'<span class="dn">'+dr.f+' · '+dr.t+'</span><br>'+
+'<span style="font-size:.82rem;color:var(--muted)">你在<strong>'+dimNames[minDim]+'</strong>维度上'+marginDesc+'，'+dr.f+'是你灵魂的另一个侧面。'+dr.q.replace(/[""""]/g,"")+'</span>';
+
+drawRadar(r.radar);
+}
+
+function drawRadar(data){
+var labels=["社交能量","感性指数","进取心","兼济天下","创造力","自洽力"];
+var cx=110,cy=110,maxR=80,n=data.length;
+var svg='<svg viewBox="0 0 220 220" style="width:100%;height:100%">';
+for(var ring=1;ring<=4;ring++){var r=maxR*ring/4,pts="";for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;pts+=(cx+r*Math.cos(a)).toFixed(1)+","+(cy+r*Math.sin(a)).toFixed(1)+" ";}svg+='<polygon points="'+pts+'" fill="none" stroke="#D2C7B0" stroke-width="0.6"/>';}
+for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+maxR*Math.cos(a)).toFixed(1)+'" y2="'+(cy+maxR*Math.sin(a)).toFixed(1)+'" stroke="#D2C7B0" stroke-width="0.5"/>';}
+var pts="";for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;var r=maxR*data[i]/100;pts+=(cx+r*Math.cos(a)).toFixed(1)+","+(cy+r*Math.sin(a)).toFixed(1)+" ";}
+svg+='<polygon points="'+pts+'" fill="rgba(155,46,27,0.12)" stroke="#9C2E1B" stroke-width="1.5"/>';
+for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;var r=maxR*data[i]/100;svg+='<circle cx="'+(cx+r*Math.cos(a)).toFixed(1)+'" cy="'+(cy+r*Math.sin(a)).toFixed(1)+'" r="3" fill="#9C2E1B"/>';}
+for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;var lr=maxR+16;var lx=cx+lr*Math.cos(a);var ly=cy+lr*Math.sin(a);svg+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#8C8478" font-family="sans-serif">'+labels[i]+'</text>';}
+svg+='</svg>';
+document.getElementById("rRadar").innerHTML=svg;
+}
+
+function wrapText(ctx,text,x,y,maxWidth,lineHeight){
+var chars=text.split(""),line="",lines=[];
+for(var i=0;i<chars.length;i++){
+var test=line+chars[i];
+if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=chars[i];}
+else{line=test;}
+}
+if(line)lines.push(line);
+var ty=y;
+for(var j=0;j<lines.length;j++){ctx.fillText(lines[j],x,ty);ty+=lineHeight;}
+return ty;
+}
+
+function shareResult(){
+var r=R[_ctp];
+if(!r){alert("请先完成测试");return;}
+var c=document.createElement("canvas"),x=c.getContext("2d");
+c.width=750;c.height=1380;
+x.fillStyle="#F2EBDE";x.fillRect(0,0,750,1380);
+x.fillStyle="#FFFCF6";x.fillRect(30,30,690,1320);
+var g=x.createLinearGradient(30,30,720,30);
+g.addColorStop(0,"#9C2E1B");g.addColorStop(.5,"#A8843A");g.addColorStop(1,"#5B6D4A");
+x.fillStyle=g;x.fillRect(30,30,690,6);
+
+x.textAlign="center";
+x.fillStyle="#9C2E1B";x.font="600 15px sans-serif";
+x.fillText("YOUR HISTORICAL SOUL",375,82);
+x.fillStyle="#2B2620";x.font="bold 55px Georgia,serif";
+x.fillText(r.f,375,155);
+x.fillStyle="#A8843A";x.font="600 20px sans-serif";
+x.fillText(r.t,375,193);
+x.fillStyle="#8C8478";x.font="14px sans-serif";
+x.fillText(r.k,375,223);
+x.strokeStyle="#9C2E1B";x.lineWidth=3;
+x.beginPath();x.arc(375,285,38,0,2*Math.PI);x.stroke();
+x.fillStyle="rgba(155,46,27,0.04)";x.fill();
+x.fillStyle="#9C2E1B";x.font="bold 36px Georgia,serif";
+x.fillText(r.sym,375,300);
+x.fillStyle="#8C8478";x.font="12px sans-serif";
+x.fillText("你的灵魂符号",375,340);
+x.strokeStyle="#D2C7B0";x.lineWidth=1;
+x.beginPath();x.moveTo(120,368);x.lineTo(630,368);x.stroke();
+x.fillStyle="#9C2E1B";x.font="italic 18px Georgia,serif";
+var qy=wrapText(x,r.q,375,405,560,28);
+qy+=12;
+x.strokeStyle="#D2C7B0";x.lineWidth=1;
+x.beginPath();x.moveTo(120,qy);x.lineTo(630,qy);x.stroke();
+qy+=35;
+x.textAlign="left";
+x.fillStyle="#9C2E1B";x.fillRect(80,qy,3,14);
+x.fillStyle="#2B2620";x.font="bold 14px sans-serif";
+x.fillText("破局之道",90,qy+12);
+x.fillStyle="#2B2620";x.font="13px sans-serif";
+var y1=wrapText(x,r.adv,80,qy+30,590,22);
+y1+=15;
+x.fillStyle="#9C2E1B";x.fillRect(80,y1,3,14);
+x.fillStyle="#2B2620";x.font="bold 14px sans-serif";
+x.fillText("人格盲区",90,y1+12);
+x.fillStyle="#2B2620";x.font="13px sans-serif";
+var y2=wrapText(x,r.blind,80,y1+30,590,22);
+y2+=15;
+x.fillStyle="#9C2E1B";x.fillRect(80,y2,3,14);
+x.fillStyle="#2B2620";x.font="bold 14px sans-serif";
+x.fillText("隐藏天赋",90,y2+12);
+x.fillStyle="#2B2620";x.font="13px sans-serif";
+var y3=wrapText(x,r.ht,80,y2+30,590,22);
+y3+=15;
+x.strokeStyle="#D2C7B0";x.lineWidth=1;
+x.beginPath();x.moveTo(120,y3);x.lineTo(630,y3);x.stroke();
+y3+=30;
+x.fillStyle="#A8843A";x.font="bold 12px sans-serif";
+x.fillText("职业方向",80,y3);
+x.fillText("感情模式",390,y3);
+x.fillStyle="#2B2620";x.font="12px sans-serif";
+var c1y=wrapText(x,r.car,80,y3+20,280,20);
+var c2y=wrapText(x,r.lov,390,y3+20,280,20);
+var cy=Math.max(c1y,c2y)+15;
+x.textAlign="center";
+x.fillStyle="#A8843A";x.font="600 13px sans-serif";
+x.fillText("灵魂伴侣："+r.sm.f+"（"+r.sm.t+"）    命中对手："+r.nm.f+"（"+r.nm.t+"）",375,cy);
+x.strokeStyle="#D2C7B0";x.lineWidth=1;
+x.beginPath();x.moveTo(120,cy+18);x.lineTo(630,cy+18);x.stroke();
+cy+=42;
+x.textAlign="left";
+x.fillStyle="#9C2E1B";x.fillRect(80,cy,3,14);
+x.fillStyle="#2B2620";x.font="bold 14px sans-serif";
+x.fillText("人生宿命",90,cy+12);
+x.fillStyle="#2B2620";x.font="13px sans-serif";
+var y4=wrapText(x,r.des,80,cy+30,590,22);
+y4+=15;
+x.strokeStyle="#D2C7B0";x.lineWidth=1;
+x.beginPath();x.moveTo(120,y4);x.lineTo(630,y4);x.stroke();
+y4+=20;
+if(typeof qrcode!=="undefined"){
+var qr=qrcode(0,"M");qr.addData(window.location.href);qr.make();
+var mc=qr.getModuleCount(),qs=80,cs=qs/mc;
+x.fillStyle="#fff";x.fillRect(335,y4,80,80);
+for(var ri=0;ri<mc;ri++){for(var ci=0;ci<mc;ci++){
+if(qr.isDark(ri,ci)){x.fillStyle="#2B2620";x.fillRect(335+ci*cs,y4+ri*cs,cs+0.5,cs+0.5);}}}
+x.strokeStyle="#D2C7B0";x.lineWidth=1;x.strokeRect(335,y4,80,80);
+}else{
+x.strokeStyle="#9C2E1B";x.lineWidth=2;x.strokeRect(335,y4,80,80);
+x.fillStyle="#9C2E1B";x.font="bold 11px sans-serif";x.textAlign="center";
+x.fillText("部署后\n显示二维码",375,y4+35);
+x.fillStyle="#8C8478";x.font="10px sans-serif";
+x.fillText("(需联网加载)",375,y4+55);
+}
+x.textAlign="center";
+x.fillStyle="#9C2E1B";x.font="600 13px sans-serif";
+x.fillText("扫码测一测你的灵魂住着哪位历史人物",375,y4+105);
+x.fillStyle="#8C8478";x.font="12px sans-serif";
+x.fillText("灵魂人格研究所 · 24题深度性格测试",375,y4+128);
+var link=document.createElement("a");
+link.download="灵魂人物_"+r.f+".png";
+link.href=c.toDataURL("image/png");
+link.click();
+}
+</script>
+</body>
+</html>
