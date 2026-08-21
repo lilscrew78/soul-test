@@ -20,7 +20,7 @@ h1{text-align:center;font-size:20px;color:#c9a96e;margin-bottom:8px;letter-spaci
 .btn-outline{background:transparent;border:1px solid #c9a96e;color:#c9a96e;margin-top:10px}
 .current-key{background:rgba(201,169,110,0.1);border:1px solid #c9a96e;border-radius:8px;padding:16px;text-align:center;margin:20px 0}
 .current-key .label{font-size:12px;color:#888;margin-bottom:6px}
-.current-key .value{font-size:22px;color:#c9a96e;font-weight:600;letter-spacing:1px}
+.current-key .value{font-size:28px;color:#c9a96e;font-weight:600;letter-spacing:2px}
 .msg{text-align:center;font-size:13px;margin-top:12px;min-height:20px}
 .msg.success{color:#4CAF50}
 .msg.error{color:#f44336}
@@ -51,7 +51,7 @@ h1{text-align:center;font-size:20px;color:#c9a96e;margin-bottom:8px;letter-spaci
 
 <div class="input-group" style="margin-top:20px">
 <label>设置新密钥（从下方列表点击选择，或手动输入）</label>
-<input type="text" id="newKey" placeholder="如 SOUL-P3RB-JGU4" maxlength="20">
+<input type="text" id="newKey" placeholder="如 2601" maxlength="4">
 </div>
 
 <button class="btn" id="setBtn" onclick="setDailyKey()">设为每日密钥</button>
@@ -73,15 +73,14 @@ h1{text-align:center;font-size:20px;color:#c9a96e;margin-bottom:8px;letter-spaci
 3. 当天所有买家共用这个密钥，可多次使用<br>
 4. 第二天换一个新密钥，更新话术即可<br>
 5. 之前的每日密钥自动失效<br><br>
-<b>注意：</b>GitHub Token在ghp_开头，每次使用需要重新输入，不会保存在任何地方。
+<b>注意：</b>GitHub Token在ghp_开头，每次使用需要重新输入，不会保存在任何地方。设置新密钥后会自动清除CDN缓存，立即生效。
 </div>
 </div>
 
 <script>
 var REPO="lilscrew78/soul-test";
 var FILE_PATH="daily-key.txt";
-var CDN_URL="https://cdn.jsdelivr.net/gh/"+REPO+"@main/"+FILE_PATH+"?t="+Date.now();
-var KEYS=["SOUL-P3RB-JGU4","SOUL-C4KJ-FDXV","SOUL-QCPE-NZVD","SOUL-8AGD-6V7P","SOUL-5S9W-7Q7F","SOUL-B6XP-VNYU","SOUL-3J6Z-XZDM","SOUL-KN2B-88XH","SOUL-S8VV-EB4E","SOUL-VXLX-A45K","SOUL-HLUN-UB3N","SOUL-TCRT-U7RC","SOUL-DY3U-756M","SOUL-CBKK-VCZY","SOUL-TZP6-QMYL","SOUL-6TUP-V98J","SOUL-WSCU-J285","SOUL-AXPV-95HW","SOUL-XQ2W-7VPE","SOUL-ZSHM-UD4D","SOUL-2M26-296W","SOUL-7UVW-2CLY","SOUL-5US8-ENYS","SOUL-XXSH-R4GF","SOUL-PBFA-9NGW","SOUL-KHCN-VZCM","SOUL-5APD-W7T2","SOUL-NF65-KUG9","SOUL-H4KV-NYJ2","SOUL-7JHM-VPGG","SOUL-4N8Z-4PV4","SOUL-ZLTF-FA6S","SOUL-A73L-U78A","SOUL-6DC5-YLHB","SOUL-XP8W-5E3E","SOUL-B4LS-8M9T","SOUL-8JWH-LHEH","SOUL-5V3P-5VA6","SOUL-5D5Q-RMAR","SOUL-DL5F-ZBCY","SOUL-NLZF-VQNU","SOUL-XQWK-BN53","SOUL-LTBZ-6GUA","SOUL-92KU-UEJM","SOUL-RFER-9VEG","SOUL-PW9T-JK3R","SOUL-99SM-Z4RJ","SOUL-QC5L-4XM5","SOUL-HNTD-PAZR","SOUL-84HL-G9LG","SOUL-2CHW-TXKD","SOUL-V7RA-UJPP","SOUL-FZRV-P3MU","SOUL-CWKM-ATNP","SOUL-9D6C-EY5D","SOUL-FP7Z-HVLE","SOUL-Z9TZ-QCW6","SOUL-ZAP3-BW8M","SOUL-DG8Y-3URN","SOUL-YSRB-4JCG","SOUL-Q5C4-VS8W","SOUL-Q626-F6HQ","SOUL-YC5T-G724","SOUL-VRYT-MB8L","SOUL-6VJP-GGS4","SOUL-JPGL-UF4P","SOUL-XQS2-D2U9","SOUL-8DHT-PSBJ","SOUL-L94P-CA32","SOUL-6LHM-N794","SOUL-L5QN-PA8H","SOUL-B3FT-KYHP","SOUL-PZQC-SAV9","SOUL-ZCAC-S9U5","SOUL-JAE7-SPS4","SOUL-896S-WFPW","SOUL-S7RP-EJGZ","SOUL-KRVU-77P7","SOUL-J4K7-EVWS","SOUL-QB59-R42Y","SOUL-M57J-VSC3","SOUL-3R6R-Z9D8","SOUL-FBED-F2BQ","SOUL-XZWE-N9E8","SOUL-F5QF-SU5N","SOUL-DPFL-8EZR","SOUL-G47F-6MJW","SOUL-5QV5-ZXRW","SOUL-SXTC-6FWK","SOUL-2532-LLXM","SOUL-PJJ4-M3VN","SOUL-GSME-JT9T","SOUL-E39V-TV3K","SOUL-WAZX-JKS3","SOUL-5FLK-WSRZ","SOUL-FAFR-977L","SOUL-C6XH-Y5NQ","SOUL-WQH6-BHGU","SOUL-D1QU-ED3J","SOUL-TXZR-THMZ"];
+var KEYS=["2601","9473","9463","7564","6899","8202","2863","4550","7256","6098","5659","8642","9158","6055","8403","8825","5845","9572","8898","6481","8301","5373","2655","2627","9058","2549","6738","7913","5683","6740","1286","6713","8580","1415","5539","3000","3090","8798","6061","4962","3530","9939","2958","7660","4594","8481","5788","9698","5319","1885","4021","6634","7688","1355","8492","2731","6912","1287","1386","1496","4566","4830","3589","6136","3737","7908","1160","8063","9630","2631","2144","3434","7132","3690","2133","4926","8656","6308","9285","3449","9240","1097","7239","6390","4441","3851","7873","1519","7273","8504","1919","4720","2636","1486","2790","8160","8064","2495","9562","6643"];
 
 function showMsg(text,type){var el=document.getElementById("msg");el.textContent=text;el.className="msg "+type}
 function getToken(){return document.getElementById("githubToken").value.trim()}
@@ -93,9 +92,9 @@ return data.sha;
 }
 
 function loadDailyKey(){
-var url="https://cdn.jsdelivr.net/gh/"+REPO+"@main/"+FILE_PATH+"?t="+Date.now();
 var btn=document.getElementById("loadBtn");
 btn.disabled=true;btn.textContent="加载中...";
+var url="daily-key.txt?t="+Date.now();
 fetch(url)
 .then(function(r){return r.text()})
 .then(function(text){
@@ -104,23 +103,32 @@ text=text.trim();
 var box=document.getElementById("currentKeyBox");
 var val=document.getElementById("currentKeyValue");
 box.classList.remove("hidden");
-if(text==="NONE"||!text){
-val.textContent="未设置（一码一用模式）";
-}else{
-val.textContent=text;
-}
+if(text==="NONE"||!text){val.textContent="未设置";}else{val.textContent=text;}
 showMsg("加载成功","success");
+})
+.catch(function(){
+fetch("https://cdn.jsdelivr.net/gh/"+REPO+"@main/"+FILE_PATH+"?t="+Date.now())
+.then(function(r){return r.text()})
+.then(function(text){
+btn.disabled=false;btn.textContent="查看当前每日密钥";
+text=text.trim();
+var box=document.getElementById("currentKeyBox");
+var val=document.getElementById("currentKeyValue");
+box.classList.remove("hidden");
+if(text==="NONE"||!text){val.textContent="未设置";}else{val.textContent=text;}
+showMsg("加载成功（CDN）","success");
 })
 .catch(function(e){
 btn.disabled=false;btn.textContent="查看当前每日密钥";
 showMsg("网络错误，请重试","error");
+});
 });
 }
 
 async function setDailyKey(){
 var token=getToken();
 if(!token){showMsg("请输入GitHub Token","error");return}
-var nk=document.getElementById("newKey").value.trim().toUpperCase();
+var nk=document.getElementById("newKey").value.trim();
 if(!nk){showMsg("请输入或选择一个密钥","error");return}
 var btn=document.getElementById("setBtn");
 btn.disabled=true;btn.textContent="设置中...";
@@ -130,10 +138,11 @@ var body={message:"Update daily key",content:btoa(nk),sha:sha,branch:"main"};
 var res=await fetch("https://api.github.com/repos/"+REPO+"/contents/"+FILE_PATH,{method:"PUT",headers:{Authorization:"token "+token,Accept:"application/vnd.github.v3+json","Content-Type":"application/json"},body:JSON.stringify(body)});
 var data=await res.json();
 if(data.content){
+await purgeCDN();
 btn.disabled=false;btn.textContent="设为每日密钥";
 document.getElementById("currentKeyBox").classList.remove("hidden");
 document.getElementById("currentKeyValue").textContent=nk;
-showMsg("设置成功！请把此密钥写进小红书自动发货话术","success");
+showMsg("设置成功！密钥已立即生效","success");
 }else{
 btn.disabled=false;btn.textContent="设为每日密钥";
 showMsg(data.message||"设置失败","error");
@@ -147,21 +156,23 @@ showMsg("网络错误，请检查Token是否正确","error");
 async function clearDailyKey(){
 var token=getToken();
 if(!token){showMsg("请输入GitHub Token","error");return}
-var btn=document.querySelector('.btn-outline');
 try{
 var sha=await getSha();
 var body={message:"Clear daily key",content:btoa("NONE"),sha:sha,branch:"main"};
 var res=await fetch("https://api.github.com/repos/"+REPO+"/contents/"+FILE_PATH,{method:"PUT",headers:{Authorization:"token "+token,Accept:"application/vnd.github.v3+json","Content-Type":"application/json"},body:JSON.stringify(body)});
 var data=await res.json();
 if(data.content){
-document.getElementById("currentKeyValue").textContent="未设置（一码一用模式）";
-showMsg("已清除，恢复一码一用模式","success");
-}else{
-showMsg(data.message||"清除失败","error");
+await purgeCDN();
+document.getElementById("currentKeyValue").textContent="未设置";
+showMsg("已清除","success");
+}else{showMsg(data.message||"清除失败","error");}
+}catch(e){showMsg("网络错误，请检查Token","error");}
 }
-}catch(e){
-showMsg("网络错误，请检查Token是否正确","error");
-}
+
+async function purgeCDN(){
+try{
+await fetch("https://purge.jsdelivr.net/gh/"+REPO+"@main/"+FILE_PATH);
+}catch(e){}
 }
 
 function toggleKeyList(){
@@ -173,9 +184,7 @@ for(var i=0;i<KEYS.length;i++){
 html+='<div class="item" onclick="selectKey(\''+KEYS[i]+'\')">'+(i+1)+'. '+KEYS[i]+'</div>';
 }
 document.getElementById("keyList").innerHTML=html;
-}else{
-box.classList.add("hidden");
-}
+}else{box.classList.add("hidden");}
 }
 
 function selectKey(k){
