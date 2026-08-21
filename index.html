@@ -365,7 +365,7 @@ var btn=document.getElementById("gateBtn");
 btn.textContent="验证中...";btn.disabled=true;
 document.getElementById("gateErr").textContent="";
 var t=Date.now();
-fetch("daily-key.txt?t="+t)
+fetch("https://cdn.jsdelivr.net/gh/lilscrew78/soul-test@main/daily-key.txt?t="+t,{cache:"no-cache"})
 .then(function(r){return r.text()})
 .then(function(text){
 text=text.trim();
@@ -380,7 +380,7 @@ document.getElementById("gateInput").focus();
 }
 })
 .catch(function(){
-fetch("https://cdn.jsdelivr.net/gh/lilscrew78/soul-test@main/daily-key.txt?t="+t)
+fetch("daily-key.txt?t="+t,{cache:"no-cache"})
 .then(function(r){return r.text()})
 .then(function(text){
 text=text.trim();
