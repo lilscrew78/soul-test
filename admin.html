@@ -94,8 +94,7 @@ return data.sha;
 function loadDailyKey(){
 var btn=document.getElementById("loadBtn");
 btn.disabled=true;btn.textContent="加载中...";
-var url="daily-key.txt?t="+Date.now();
-fetch(url)
+fetch("https://cdn.jsdelivr.net/gh/"+REPO+"@main/"+FILE_PATH+"?t="+Date.now(),{cache:"no-cache"})
 .then(function(r){return r.text()})
 .then(function(text){
 btn.disabled=false;btn.textContent="查看当前每日密钥";
@@ -107,7 +106,7 @@ if(text==="NONE"||!text){val.textContent="未设置";}else{val.textContent=text;
 showMsg("加载成功","success");
 })
 .catch(function(){
-fetch("https://cdn.jsdelivr.net/gh/"+REPO+"@main/"+FILE_PATH+"?t="+Date.now())
+fetch(FILE_PATH+"?t="+Date.now(),{cache:"no-cache"})
 .then(function(r){return r.text()})
 .then(function(text){
 btn.disabled=false;btn.textContent="查看当前每日密钥";
@@ -116,7 +115,7 @@ var box=document.getElementById("currentKeyBox");
 var val=document.getElementById("currentKeyValue");
 box.classList.remove("hidden");
 if(text==="NONE"||!text){val.textContent="未设置";}else{val.textContent=text;}
-showMsg("加载成功（CDN）","success");
+showMsg("加载成功","success");
 })
 .catch(function(e){
 btn.disabled=false;btn.textContent="查看当前每日密钥";
