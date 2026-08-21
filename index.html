@@ -228,7 +228,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 <div class="seal">锁</div>
 <h2>灵魂档案 · 专属解锁</h2>
 <div class="gate-sub">本测试为付费专属内容，请输入密钥解锁<br>密钥获取方式详见购买页说明</div>
-<input class="gate-input" id="gateInput" type="text" placeholder="请输入密钥" maxlength="20" onkeydown="if(event.key==='Enter')checkGate()">
+<input class="gate-input" id="gateInput" type="text" placeholder="请输入4位密钥" maxlength="4" onkeydown="if(event.key==='Enter')checkGate()">
 <div class="gate-err" id="gateErr"></div>
 <button class="btn" id="gateBtn" onclick="checkGate()">解锁测试</button>
 </div>
@@ -359,13 +359,28 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 function openShareModal(){document.getElementById("shareModal").classList.add("show")}
 function closeShareModal(e){if(!e||e.target===e.currentTarget)document.getElementById("shareModal").classList.remove("show")}
 function checkGate(){
-var v=document.getElementById("gateInput").value.trim().toUpperCase();
+var v=document.getElementById("gateInput").value.trim();
 if(!v){document.getElementById("gateErr").textContent="请输入密钥";return;}
 var btn=document.getElementById("gateBtn");
 btn.textContent="验证中...";btn.disabled=true;
 document.getElementById("gateErr").textContent="";
-var cdnUrl="https://cdn.jsdelivr.net/gh/lilscrew78/soul-test@main/daily-key.txt?t="+Date.now();
-fetch(cdnUrl)
+var t=Date.now();
+fetch("daily-key.txt?t="+t)
+.then(function(r){return r.text()})
+.then(function(text){
+text=text.trim();
+btn.textContent="解锁测试";btn.disabled=false;
+if(text!=="NONE"&&text===v){
+document.getElementById("s-gate").classList.add("hidden");
+document.getElementById("s-welcome").classList.remove("hidden");
+}else{
+document.getElementById("gateErr").textContent="密钥不正确，请检查后重试";
+document.getElementById("gateInput").value="";
+document.getElementById("gateInput").focus();
+}
+})
+.catch(function(){
+fetch("https://cdn.jsdelivr.net/gh/lilscrew78/soul-test@main/daily-key.txt?t="+t)
 .then(function(r){return r.text()})
 .then(function(text){
 text=text.trim();
@@ -382,6 +397,7 @@ document.getElementById("gateInput").focus();
 .catch(function(e){
 btn.textContent="解锁测试";btn.disabled=false;
 document.getElementById("gateErr").textContent="网络错误，请稍后重试";
+});
 });
 }
 function figImg(desc){
